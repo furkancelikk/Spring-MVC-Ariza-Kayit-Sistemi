@@ -7,13 +7,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--<%@ page pageEncoding="UTF-8" %>--%>
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
+<div><%@include file='../template.jsp'%></div>
 <h1>LIST ITEMS</h1>
 <c:forEach items="${list}" var="item">
     <div>
