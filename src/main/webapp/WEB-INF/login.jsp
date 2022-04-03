@@ -46,7 +46,7 @@
             </div>
             <a href="#">Şifrenizimi Unuttunuz?</a>
             <input type="submit" class="btn" value="Giriş Yap">
-            <%--            <input type="submit" class="btn" value="Kayıt Ol">--%>
+            <a href="register"><input type="button" class="btn" value="Kayıt Ol"></a>
         </form>
     </div>
 </div>

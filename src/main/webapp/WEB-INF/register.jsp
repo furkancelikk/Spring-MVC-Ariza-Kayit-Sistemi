@@ -22,46 +22,46 @@
 		
 		</div>
 		<div class="login-content">
-			<form action="index.html">
+			<form action="register/registered" method="post">
 				<img src="resources/img/avatar.svg">
 				<h2 class="title">Kaydol!</h2>
            		<div class="input-div one">
            		   <div class="i">
-           		   		<i class="fas fa-userAlpi"></i>
+           		   		<i class="fas fa-user"></i>
            		   </div>
            		   <div class="div">
            		   		<h5>Kullanıcı Adı</h5>
-           		   		<input type="text" class="input">
+           		   		<input type="text" class="input" name="kullaniciadi">
            		   </div>
            		   
            		</div>
            		<div class="input-div one">
            		   <div class="i">
-           		   		<i class="fas fa-userAlpi"></i>
+           		   		<i class="fas fa-user"></i>
            		   </div>
            		   <div class="div">
            		   		<h5>İsim</h5>
-           		   		<input type="text" class="input">
+           		   		<input type="text" class="input" name="ad">
            		   </div>
            		   
            		</div>
            		<div class="input-div one">
            		   <div class="i">
-           		   		<i class="fas fa-userAlpi"></i>
+           		   		<i class="fas fa-user"></i>
            		   </div>
            		   <div class="div">
            		   		<h5>Soyisim</h5>
-           		   		<input type="text" class="input">
+           		   		<input type="text" class="input" name="soyad">
            		   </div>
            		   
            		</div>
            		<div class="input-div one">
            		   <div class="i">
-           		   		<i class="fas fa-userAlpi"></i>
+           		   		<i class="fas fa-user"></i>
            		   </div>
            		   <div class="div">
            		   		<h5>Email</h5>
-           		   		<input type="text" class="input">
+           		   		<input type="email" class="input" name="email">
            		   </div>
            		   
            		</div>
@@ -71,7 +71,7 @@
            		   </div>
            		   <div class="div">
            		    	<h5>Şifre</h5>
-           		    	<input type="password" class="input">
+           		    	<input type="password" class="input" name="sifre">
             	   </div>
             	</div>
             	
