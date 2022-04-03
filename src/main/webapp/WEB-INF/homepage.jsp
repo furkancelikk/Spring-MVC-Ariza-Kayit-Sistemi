@@ -31,11 +31,6 @@
         </c:forEach>
     </c:if>
 
-    <div>
-        <h2>
-            <c:out value="${user.getEmail()}"/>
-        </h2>
-    </div>
 
     <h1><c:out value="${karsilama}"/></h1>
     <h2>${kisiKarsilama}</h2>

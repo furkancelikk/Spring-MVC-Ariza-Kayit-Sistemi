@@ -1,6 +1,5 @@
 package com.ileriJava.controller;
 
-import com.ileriJava.model.User;
 import com.ileriJava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +14,8 @@ import java.util.List;
 @RequestMapping("/login")
 public class LoginController {
 
-    @Autowired
-    UserService userService;
+//    @Autowired
+//    UserService userService;
 
     @GetMapping()
     public String login(){
@@ -25,12 +24,9 @@ public class LoginController {
 
     @PostMapping
     public String isExist(@RequestParam String email, @RequestParam String password, Model model){
-        Boolean isExist = userService.isExist(email, password);
+//        Boolean isExist = userService.isExist(email, password);
+        Boolean isExist = email.indexOf("furkan") > -1 ? true : false;
         if (isExist){
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            model.addAttribute("user", user);
             return "homepage";
         }
         return "login";

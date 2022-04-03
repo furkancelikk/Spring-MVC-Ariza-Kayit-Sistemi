@@ -1,60 +1,70 @@
 package com.ileriJava.model;
 
-public class User {
-    private String firstName;
-    private String lastName;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "User")
+public class User implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    @Column(name = "kullaniciadi", nullable = false)
+    private String kullaniciadi;
+    @Column(name = "ad", nullable = false)
+    private String ad;
+    @Column(name = "soyad", nullable = false)
+    private String soyad;
+    @Column(name = "email", nullable = false)
     private String email;
-    private String phoneNumber;
-    private String password;
+    @Column(name = "sifre", nullable = false)
+    private String sifre;
+    @Column(name = "sistemrol", nullable = false)
+    private String sistemrol;
 
-    public User() {
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getKullaniciadi() {
+        return kullaniciadi;
+    }
+    public void setKullaniciadi(String kullaniciadi) {
+        this.kullaniciadi = kullaniciadi;
     }
 
-    public User(String firstName, String lastName, String email, String phoneNumber, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
+    public String getAd() {
+        return ad;
     }
-
-    public String getFirstName() {
-        return firstName;
+    public void setAd(String ad) {
+        this.ad = ad;
     }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getSoyad() {
+        return soyad;
     }
-
-    public String getLastName() {
-        return lastName;
+    public void setSoyad(String soyad) {
+        this.soyad = soyad;
     }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getSifre() {
+        return sifre;
+    }
+    public void setSifre(String sifre) {
+        this.sifre = sifre;
+    }
+    public String getSistemrol() {
+        return sistemrol;
+    }
+    public void setSistemrol(String sistemrol) {
+        this.sistemrol = sistemrol;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
