@@ -51,10 +51,5 @@
 
 </div>
 
-<div style="margin-left:20%">
-
-
-</div>
-
 </body>
 </html>

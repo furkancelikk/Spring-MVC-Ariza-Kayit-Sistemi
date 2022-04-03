@@ -23,7 +23,7 @@
 
     </div>
     <div class="login-content">
-        <form action="login/" method="post">
+        <form action="login" method="post">
             <img src="resources/img/avatar.svg">
             <h2 class="title">Hoşgeldiniz!</h2>
             <div class="input-div one">
@@ -31,8 +31,8 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="div">
-                    <h5>Kullanıcı Adı</h5>
-                    <input type="text" class="input" name="username">
+                    <h5>E-mail</h5>
+                    <input type="email" class="input" name="email">
                 </div>
             </div>
             <div class="input-div pass">
