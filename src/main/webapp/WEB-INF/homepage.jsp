@@ -25,7 +25,7 @@
         <c:forEach items="${list}" var="item">
             <div>
                 <h2>
-                    <c:out value="${item}"/>
+                    <c:out value="${item.getAd()} ${item.getSoyad()}"/>
                 </h2>
             </div>
         </c:forEach>

@@ -1,5 +1,7 @@
 package com.ileriJava.controller;
 
+import com.ileriJava.model.User;
+import com.ileriJava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -16,8 +18,13 @@ import java.util.Locale;
 @Controller
 public class MainController {
 
-    @Autowired
-    MessageSource messageSource;
+    private final MessageSource messageSource;
+    private final UserService userService;
+
+    public MainController(MessageSource messageSource, UserService userService) {
+        this.messageSource = messageSource;
+        this.userService = userService;
+    }
 
     @RequestMapping({"/", ""})
     public String main(){
@@ -27,11 +34,8 @@ public class MainController {
 
     @GetMapping(value = "/home")
     public String homeView(Model model, Locale locale, HttpServletRequest request, HttpServletResponse response){
-        List<String> list = new ArrayList<>();
-        list.add("FURKAN");
-        list.add("ÖZLEM");
-        list.add("ALPEREN");
-        list.add("CAN");
+        List<User> list = new ArrayList<>();
+        list = userService.getAll();
         model.addAttribute("list", list);
 
         model.addAttribute("karsilama",
