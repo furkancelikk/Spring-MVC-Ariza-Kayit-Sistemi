@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column(name = "userid", nullable = false)
+    private Long userid;
     @Column(name = "kullaniciadi", nullable = false)
     private String kullaniciadi;
     @Column(name = "ad", nullable = false)
@@ -23,11 +23,11 @@ public class User implements Serializable {
     @Column(name = "sistemrol", nullable = false)
     private String sistemrol;
 
-    public Long getId() {
-        return id;
+    public Long getUserid() {
+        return userid;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserid(Long userid) {
+        this.userid = userid;
     }
     public String getKullaniciadi() {
         return kullaniciadi;
