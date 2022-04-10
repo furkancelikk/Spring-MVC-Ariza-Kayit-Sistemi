@@ -8,7 +8,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -57,6 +56,21 @@ public class UserRepositoryImpl implements UserRepository {
         Predicate kullaniciAdiPredicate = cb.equal(user.get("email"), kullaniciAdi);
         Predicate sifrePredicate = cb.equal(user.get("sifre"), sifre);
         cq.where(kullaniciAdiPredicate, sifrePredicate);
+
+        Query query = session.createQuery(cq);
+        Object result = query.getSingleResult();
+        return (User)result;
+    }
+
+    @Override
+    public User findByMail(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+
+        Root<User> user = cq.from(User.class);
+        Predicate emailPredicate = cb.equal(user.get("email"), email);
+        cq.where(emailPredicate);
 
         Query query = session.createQuery(cq);
         Object result = query.getSingleResult();

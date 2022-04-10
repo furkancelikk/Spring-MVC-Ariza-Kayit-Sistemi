@@ -15,4 +15,6 @@ public interface UserRepository{
     public void deleteUser(int theId);
 
     public User getByNameAndPassword(String kullaniciAdi, String sifre);
+
+    User findByMail(String email);
 }

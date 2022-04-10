@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +25,23 @@ public class LoginController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping(value = {"", "/"})
     public String login(){
         return "login";
     }
 
     @PostMapping
-    public String isExist(@RequestParam String email, @RequestParam String password, Model model){
+    public RedirectView isExist(@RequestParam String email, @RequestParam String password, Model model, HttpServletRequest request, HttpServletResponse response){
 //        Boolean isExist = userService.isExist(email, password);
         Boolean isExist = email.indexOf("furkan") > -1 ? true : false;
         User user = userService.getByKullaniciAdiAndSifre(email, password);
+
         if (user != null){
-            return "homepage";
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            return new RedirectView("/bitirme/user/home");
         }
-        return "login";
+        return new RedirectView("/bitirme/login");
     }
 
 }

@@ -104,6 +104,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry interceptorRegistry) {
         interceptorRegistry.addInterceptor(new RequestInterceptor()).addPathPatterns("/*");
         interceptorRegistry.addInterceptor(localeInterceptor()).addPathPatterns("/*");
+        interceptorRegistry.addInterceptor(new SessionInterceptor()).addPathPatterns(new String[]{"/user/*", "/"});
         // çoklu path
 //        registry.addInterceptor(new RequestInterceptor())
 //                .addPathPatterns(new String[] { "/ogrenci/*", "/personel/*"});
