@@ -1,3 +1,5 @@
+<%@ page import="com.ileriJava.model.User" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 405fu
@@ -29,8 +31,14 @@
 <div class="w3-sidebar bg-dark text-center" style="width:20%">
 
 
-  <a href="/user/home" class="d-block text-decoration-none text-white text-uppercase mt-4 mb-5">
-    <h3>Name Surname</h3>
+  <a href="${pageContext.request.contextPath}/user/home" class="d-block text-decoration-none text-white text-uppercase mt-4 mb-5">
+    <% User user = (User) request.getSession().getAttribute("user");%>
+    <h3>
+      <%=
+      user != null ? "HOŞGELDİNİZ " + user.getAd() + " " + user.getSoyad() : ""
+      %>
+    </h3>
+<%--    <p>${pageContext.request.contextPath}</p>--%>
   </a>
 
   <div class="text-left px-2">
@@ -43,7 +51,7 @@
       <li>   <a href="/user/reference" class="list-group-item bg-dark text-white border-0">Reference</a></li>
       <li>  <a href="/user/hobi" class="list-group-item bg-dark text-white border-0">Hobbies</a> </li>
       <li>  <a href="/user/skill" class="list-group-item bg-dark text-white border-0">Skills</a> </li>
-      <li>   <a href="/logout" class="list-group-item bg-dark text-white border-0">Log Out</a></li>
+      <li>   <a href="${pageContext.request.contextPath}/logout" class="list-group-item bg-dark text-white border-0">Log Out</a></li>
 
     </ul>
 

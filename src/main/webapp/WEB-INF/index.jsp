@@ -12,11 +12,10 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
-<div><%@include file='./template.jsp'%></div>
+<div><%@include file='../template.jsp'%></div>
 <h1>LIST ITEMS</h1>
 <c:forEach items="${list}" var="item">
     <div>

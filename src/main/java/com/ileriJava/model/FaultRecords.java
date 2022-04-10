@@ -25,7 +25,7 @@ public class FaultRecords  implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date creationtime;
 
-    @Column(name="Context",nullable = false)
+    @Column(name="Context",nullable = false, columnDefinition = "TEXT")
     private String context;
 
     @Column(name = "İsExpired")

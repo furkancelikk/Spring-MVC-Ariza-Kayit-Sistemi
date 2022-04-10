@@ -32,7 +32,7 @@ public class MainController {
         return "homepage";
     }
 
-    @GetMapping(value = "/home")
+    @GetMapping(value = "/user/home")
     public String homeView(Model model, Locale locale, HttpServletRequest request, HttpServletResponse response){
         List<User> list = new ArrayList<>();
         list = userService.getAll();

@@ -25,6 +25,6 @@ public class AppExceptionHandler {
                                  Exception e) {
         System.err.println(request.getRequestURL() + " istegine karsilik karsilayici bulunamadi. " +
                 "Hata mesaji: " + e.getMessage());
-        return "404"; // 404.jsp örnek kaynak bulunamadı sayfası döndürülüyor
+        return "errors/404"; // 404.jsp örnek kaynak bulunamadı sayfası döndürülüyor
     }
 }
