@@ -1,0 +1,54 @@
+package com.ileriJava.service;
+
+import com.ileriJava.dao.CommentRepository;
+import com.ileriJava.dao.MainDAO;
+import com.ileriJava.model.Comments;
+import com.ileriJava.model.FaultRecords;
+import com.ileriJava.model.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @author furkancelik
+ **/
+
+@RequiredArgsConstructor
+@Service
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
+public class CommentService {
+
+    private final MainDAO mainDAO;
+    private final CommentRepository commentRepository;
+    private final PostService postService;
+
+
+    @Transactional
+    public Comments save(String commentContext, Long faultRecordID, HttpServletRequest request, HttpServletResponse response){
+
+        FaultRecords faultRecord = (FaultRecords) mainDAO.loadObject(FaultRecords.class, faultRecordID);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        Comments comment = new Comments();
+        comment.setFaultRecord(faultRecord);
+        comment.setUser(user);
+        comment.setContext(commentContext);
+        comment.setCreationtime(new Date());
+
+        Object savedComment = mainDAO.saveObject(comment);
+        return comment;
+    }
+
+    public List<Comments> getByPostID(Long postID) {
+        List<Comments> commentsList = commentRepository.findByPostID(postID);
+        return commentsList;
+    }
+}

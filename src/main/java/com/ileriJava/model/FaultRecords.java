@@ -4,11 +4,12 @@ package com.ileriJava.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 import com.ileriJava.model.User;
 
 @Entity
 @Table(name = "FaultRecords")
-public class FaultRecords  implements Serializable {
+public class FaultRecords implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +26,7 @@ public class FaultRecords  implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date creationtime;
 
-    @Column(name="Context",nullable = false, columnDefinition = "TEXT")
+    @Column(name = "Context", nullable = false, columnDefinition = "TEXT")
     private String context;
 
     @Column(name = "İsExpired")
@@ -39,6 +40,7 @@ public class FaultRecords  implements Serializable {
     public Long getFaultid() {
         return faultid;
     }
+
     public void setFaultid(Long faultid) {
         this.faultid = faultid;
     }
@@ -46,21 +48,23 @@ public class FaultRecords  implements Serializable {
     public String getFaulttitle() {
         return faulttitle;
     }
+
     public void setFaulttitle(String faulttitle) {
         this.faulttitle = faulttitle;
     }
 
-    public Boolean getIsresolved()
-    {
+    public Boolean getIsresolved() {
         return isresolved;
     }
-    public void setIsresolved(Boolean isresolved)
-    {
-        this.isresolved=isresolved;
+
+    public void setIsresolved(Boolean isresolved) {
+        this.isresolved = isresolved;
     }
+
     public Date getCreationtime() {
         return creationtime;
     }
+
     public void setCreationtime(Date creationtime) {
         this.creationtime = creationtime;
     }
@@ -68,25 +72,25 @@ public class FaultRecords  implements Serializable {
     public String getContext() {
         return context;
     }
+
     public void setContext(String context) {
         this.context = context;
     }
 
-    public User getUserid()
-    {
+    public User getUserid() {
         return userid;
     }
-    public void setUserid(User userid)
-    {
-        this.userid=userid;
+
+    public void setUserid(User userid) {
+        this.userid = userid;
     }
-    public Boolean getIsexpired()
-    {
+
+    public Boolean getIsexpired() {
         return isexpired;
     }
-    public void setIsexpired(Boolean isexpired)
-    {
-        this.isexpired=isexpired;
+
+    public void setIsexpired(Boolean isexpired) {
+        this.isexpired = isexpired;
     }
 
 }

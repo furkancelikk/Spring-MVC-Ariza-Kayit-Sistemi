@@ -1,8 +1,11 @@
 package com.ileriJava.model;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 import com.ileriJava.model.FaultRecords;
+
 @Entity
 @Table(name = "Comments")
 public class Comments implements Serializable {
@@ -18,14 +21,14 @@ public class Comments implements Serializable {
 
 
     //yorumun içeriğini belirtir
-    @Column(name="Context",nullable = false)
+    @Column(name = "Context", nullable = false)
     private String context;
 
 
     //Bir Kullanıcı birden fazla yorum oluşturabilir
     @ManyToOne
-    @JoinColumn(name = "Userid", referencedColumnName = "userid")
-    private User userid;
+    @JoinColumn(name = "userID", referencedColumnName = "userid")
+    private User user;
 
     //Bir Başlıkta Birden fazla yorum olabilir yorumun hangi başlık altında olduğunu söyler
     @ManyToOne
@@ -35,6 +38,7 @@ public class Comments implements Serializable {
     public Long getCommentid() {
         return commentid;
     }
+
     public void setCommentid(Long commentid) {
         this.commentid = commentid;
     }
@@ -42,6 +46,7 @@ public class Comments implements Serializable {
     public Date getCreationtime() {
         return creationtime;
     }
+
     public void setCreationtime(Date creationtime) {
         this.creationtime = creationtime;
     }
@@ -49,24 +54,24 @@ public class Comments implements Serializable {
     public String getContext() {
         return context;
     }
+
     public void setContext(String context) {
         this.context = context;
     }
 
-    public User getUserid()
-    {
-        return userid;
+    public User getUser() {
+        return user;
     }
-    public void setUserid(User userid)
-    {
-        this.userid=userid;
+
+    public void setUser(User userid) {
+        this.user = userid;
     }
 
     public FaultRecords getFaultRecord() {
         return faultRecord;
     }
-    public void setFaultRecord(FaultRecords faultRecord)
-    {
-        this.faultRecord=faultRecord;
+
+    public void setFaultRecord(FaultRecords faultRecord) {
+        this.faultRecord = faultRecord;
     }
 }

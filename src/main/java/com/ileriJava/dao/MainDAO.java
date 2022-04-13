@@ -24,4 +24,8 @@ public class MainDAO {
     public Object saveObject(Object obj){
         return getCurrentSession().save(obj);
     }
+
+    public void updateObject(Object obj){
+        getCurrentSession().saveOrUpdate(obj);
+    }
 }
