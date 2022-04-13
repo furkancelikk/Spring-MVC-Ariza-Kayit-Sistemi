@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Comments")
+@Table(name = "PERSONEL")
 public class Personal implements Serializable {
 
     @Id

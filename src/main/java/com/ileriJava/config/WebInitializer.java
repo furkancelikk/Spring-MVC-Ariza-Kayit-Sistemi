@@ -27,5 +27,6 @@ public class WebInitializer implements WebApplicationInitializer {
         characterEncodingFilter.setForceResponseEncoding(true);
         servletContext.addFilter("characterEncodingFilter",
                 characterEncodingFilter).addMappingForUrlPatterns(null, false, "/*");
+
     }
 }

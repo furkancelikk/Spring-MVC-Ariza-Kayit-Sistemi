@@ -16,7 +16,7 @@ public class AppExceptionHandler {
     public String handleInternalServerError(HttpServletRequest request, Exception exception){
         System.err.println(request.getRequestURI() + " istegi gerceklestirilirken bir hata olustu." +
                 " Hata mesajı: " + exception.getMessage());
-        return "error";
+        return "errors/error";
     }
 
     @ExceptionHandler(value = NoHandlerFoundException.class)

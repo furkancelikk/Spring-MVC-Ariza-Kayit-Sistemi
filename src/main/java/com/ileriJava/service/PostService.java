@@ -1,5 +1,6 @@
 package com.ileriJava.service;
 
+import com.google.gson.Gson;
 import com.ileriJava.dao.MainDAO;
 import com.ileriJava.dao.PostRepository;
 import com.ileriJava.model.FaultRecords;
@@ -48,7 +49,11 @@ public class PostService {
         return record;
     }
 
-    public void update(FaultRecords faultRecords) {
-        mainDAO.saveObject(faultRecords);
+    @Transactional
+    public FaultRecords update(String strFaultRecord) {
+        Gson gson = new Gson();
+        FaultRecords faultRecords = gson.fromJson(strFaultRecord, FaultRecords.class);
+        mainDAO.updateObject(faultRecords);
+        return faultRecords;
     }
 }

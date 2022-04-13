@@ -1,7 +1,6 @@
 package com.ileriJava.dao;
 
-
-import com.ileriJava.model.FaultRecords;
+import com.ileriJava.model.Comments;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -14,20 +13,27 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+/**
+ * @author furkancelik
+ **/
+
 @Repository
-public class PostRepository {
+public class CommentRepository {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    SessionFactory sessionFactory;
 
-    public List<FaultRecords> findByUserID(Long userID) {
+
+    public List<Comments> findByPostID(Long postID) {
+
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<FaultRecords> cq = cb.createQuery(FaultRecords.class);
+        CriteriaQuery<Comments> cq = cb.createQuery(Comments.class);
+        Root< Comments > commentRoot = cq.from(Comments.class);
 
-        Root<FaultRecords> faultRecordsRoot = cq.from(FaultRecords.class);
-        Predicate idPredicate = cb.equal(faultRecordsRoot.get("userid").get("userid"), userID);
-        cq.where(idPredicate);
+        Predicate postPredicate = cb.equal(commentRoot.get("faultRecord").get("faultid"), postID);
+
+        cq.where(postPredicate);
 
         Query query = session.createQuery(cq);
         return query.getResultList();
