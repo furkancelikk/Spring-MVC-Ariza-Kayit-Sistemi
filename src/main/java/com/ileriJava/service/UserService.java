@@ -2,8 +2,8 @@ package com.ileriJava.service;
 
 import com.ileriJava.dao.MainDAO;
 import com.ileriJava.dao.UserRepository;
+import com.ileriJava.enums.UserRole;
 import com.ileriJava.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +29,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public void addUser(User user) {
-         mainDAO.saveObject(user);
+    public Long addUser(User user) {
+        Long id = (Long) mainDAO.saveObject(user);
+        return id;
     }
 
     @Transactional(readOnly = false)
@@ -39,8 +40,24 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public User getByKullaniciAdiAndSifre(String kullaniciAdi, String sifre) {
-        return userRepository.getByNameAndPassword(kullaniciAdi, sifre);
-//       return new User();
+    public boolean getByEmailAndSifre(String email, String sifre) {
+        return userRepository.getByEmailAndSifre(email, sifre);
+    }
+
+    public User getByEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
+
+    @Transactional
+    public User registerUser(String kullaniciadi, String ad, String soyad, String email, String sifre) {
+        User user = new User();
+        user.setKullaniciAdi(kullaniciadi);
+        user.setAd(ad);
+        user.setSoyad(soyad);
+        user.setSifre(sifre);
+        user.setEmail(email);
+        user.setRole(UserRole.USER);
+        addUser(user);
+        return user;
     }
 }

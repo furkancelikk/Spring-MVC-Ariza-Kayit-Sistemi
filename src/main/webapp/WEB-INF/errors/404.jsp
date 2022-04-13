@@ -405,7 +405,7 @@
   <div class="error__title">404</div>
   <div class="error__subtitle">Hmmm...</div>
   <div class="error__description">It looks like one of the  developers fell asleep</div>
-  <a href="/bitirme/"><button class="error__button error__button--active">HOME</button></a>
+  <a href="${pageContext.request.contextPath}/"><button class="error__button error__button--active">HOME</button></a>
 </div>
 
 <div class="astronaut">

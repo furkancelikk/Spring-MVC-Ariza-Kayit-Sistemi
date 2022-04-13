@@ -15,6 +15,7 @@
   <title>Insert title here</title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <style>
 
     .linear{
@@ -24,7 +25,7 @@
   </style>
 
 </head>
-<body>
+<body style="background: #ececec;">
 
 
 
@@ -35,9 +36,11 @@
     <% User user = (User) request.getSession().getAttribute("user");%>
     <h3>
       <%=
-      user != null ? "HOŞGELDİNİZ " + user.getAd() + " " + user.getSoyad() : ""
+      user != null ? user.getAd() + " " + user.getSoyad() : ""
       %>
     </h3>
+
+    <img src="${pageContext.request.contextPath}/resources/img/avatar.svg" width="200">
 <%--    <p>${pageContext.request.contextPath}</p>--%>
   </a>
 
@@ -51,7 +54,7 @@
       <li>   <a href="/user/reference" class="list-group-item bg-dark text-white border-0">Reference</a></li>
       <li>  <a href="/user/hobi" class="list-group-item bg-dark text-white border-0">Hobbies</a> </li>
       <li>  <a href="/user/skill" class="list-group-item bg-dark text-white border-0">Skills</a> </li>
-      <li>   <a href="${pageContext.request.contextPath}/logout" class="list-group-item bg-dark text-white border-0">Log Out</a></li>
+      <li>   <a id="logout" tabindex="0" style="cursor: pointer;" class="list-group-item bg-dark text-white border-0">Log Out</a></li>
 
     </ul>
 
@@ -59,5 +62,15 @@
 
 </div>
 
+<script>
+  $("#logout").click(function (){
+    $.post("${pageContext.request.contextPath}/logout", {}, function (data, status, xhr){
+      var result = JSON.parse(data);
+      if (status == "success" && result.success == true) {
+        window.location.href = "${pageContext.request.contextPath}/login";
+      }
+    });
+  });
+</script>
 </body>
 </html>

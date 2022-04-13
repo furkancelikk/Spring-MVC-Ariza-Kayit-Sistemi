@@ -14,12 +14,12 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 </head>
-<body>
+<body style="background: #ececec;">
 
 <div>
     <%@include file='../../template.jsp' %>
@@ -44,7 +44,7 @@
                         </script>
                         <form id="form" action="${pageContext.request.contextPath}/post/update" method="post">
                             <div>
-                                <input onkeyup="handleChangePost(this)" id="faulttitle" required
+                                <input onkeyup="handleChangePost(this)" id="title" required
                                        style="width: 100%; margin: 10px 0;" class="w3-border w3-padding" type="text"
                                        placeholder="Başlık">
                             </div>
@@ -53,13 +53,18 @@
                                           style="width: 100%; margin: 10px 0;" class="w3-border w3-padding" rows="10"
                                           placeholder="İçerik"></textarea>
                             </div>
-                            <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Post
+                            <div class="form-check w3-margin-top w3-margin-bottom">
+                                <input class="form-check-input" onchange="handleChangePostIsResolved(this)" type="checkbox" id="isResolved" />
+                                <label class="form-check-label" for="isResolved">Çözüldü</label>
+                            </div>
+                            <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Güncelle
                             </button>
                         </form>
 
                         <script>
-                            $("#faulttitle").val(faultrecord.faulttitle);
+                            $("#title").val(faultrecord.title);
                             $("#context").val(faultrecord.context);
+                            $('#isResolved').prop('checked', faultrecord.isResolved);
                         </script>
                     </div>
                 </div>
@@ -109,6 +114,10 @@
 
     $(document).ready(function () {
         getThisPostComments();
+        if (faultrecord.isResolved){
+            $("#formComment").hide();
+            $("#form input, #form button, #form textarea").prop("disabled", true);
+        }
     })
 
     $("#form").submit(function (event) {
@@ -128,7 +137,7 @@
         event.preventDefault();
         $.post("${pageContext.request.contextPath}/comment/save", {
             "commentContext": $("#commentContext").val(),
-            "faultRecordID": faultrecord.faultid
+            "faultRecordID": faultrecord.id
         }, function (data, status, xhr) {
             data = JSON.parse(data);
             if (status == "success" && data.success == true) {
@@ -143,11 +152,15 @@
         faultrecord[event.id] = event.value;
     }
 
+    function handleChangePostIsResolved(event) {
+        faultrecord["isResolved"] = event.checked;
+    }
+
     function getThisPostComments() {
 
         $('#commentContainer').empty()
 
-        $.get("${pageContext.request.contextPath}/comment/getByPost?postID=" + faultrecord.faultid, function (result) {
+        $.get("${pageContext.request.contextPath}/comment/getByPost?postID=" + faultrecord.id, function (result) {
             var r = JSON.parse(result);
             var data = r.data;
             console.log(r, data);
@@ -161,7 +174,7 @@
                     ' <div>' +
                     ' <hr>' +
                     ' <p class="w3-right-align"> ' + item.user.ad + ' ' + item.user.soyad + ' </p>' +
-                    ' <p class="w3-right-align"><small> ' + item.creationtime + ' </small></p>' +
+                    ' <p class="w3-right-align"><small> ' + item.creationTime + ' </small></p>' +
                     '</div>' +
                     '</div> ' +
                     '</div>'

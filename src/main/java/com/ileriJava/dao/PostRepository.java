@@ -26,7 +26,7 @@ public class PostRepository {
         CriteriaQuery<FaultRecords> cq = cb.createQuery(FaultRecords.class);
 
         Root<FaultRecords> faultRecordsRoot = cq.from(FaultRecords.class);
-        Predicate idPredicate = cb.equal(faultRecordsRoot.get("userid").get("userid"), userID);
+        Predicate idPredicate = cb.equal(faultRecordsRoot.get("user").get("id"), userID);
         cq.where(idPredicate);
 
         Query query = session.createQuery(cq);

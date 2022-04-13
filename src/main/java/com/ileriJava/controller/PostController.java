@@ -5,12 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.ileriJava.model.FaultRecords;
 import com.ileriJava.model.User;
 import com.ileriJava.service.PostService;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,9 +26,14 @@ public class PostController {
     private PostService postService;
 
     @PostMapping(value = "/create")
-    public RedirectView createPost(@RequestParam String title, @RequestParam String context, HttpServletRequest request, HttpServletResponse response){
-        postService.create(title, context, request);
-        return new RedirectView("/bitirme/user/home");
+    public @ResponseBody String createPost(@RequestParam String title, @RequestParam String context, @RequestParam Long categoryID, HttpServletRequest request, HttpServletResponse response){
+        FaultRecords faultRecord = postService.create(title, context, categoryID, request);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", true);
+        map.put("data", faultRecord);
+        String json = gson.toJson(map);
+        return json;
     }
 
     @GetMapping(value = "/getByCurrentUser")
@@ -38,7 +41,7 @@ public class PostController {
         List<FaultRecords> recordsList = new ArrayList<>();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        recordsList = postService.getByUserID(user.getUserid());
+        recordsList = postService.getByUserID(user.getId());
         String json = new Gson().toJson(recordsList);
         return json;
     }
