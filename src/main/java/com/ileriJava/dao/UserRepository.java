@@ -29,32 +29,37 @@ public class UserRepository{
         return query.getResultList();
     }
 
-    public User getByNameAndPassword(String kullaniciAdi, String sifre){
+    public boolean getByEmailAndSifre(String email, String sifre){
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<User> cq = cb.createQuery(User.class);
 
         Root<User> user = cq.from(User.class);
-        Predicate kullaniciAdiPredicate = cb.equal(user.get("email"), kullaniciAdi);
+        Predicate kullaniciAdiPredicate = cb.equal(user.get("email"), email);
         Predicate sifrePredicate = cb.equal(user.get("sifre"), sifre);
         cq.where(kullaniciAdiPredicate, sifrePredicate);
 
         Query query = session.createQuery(cq);
-        Object result = query.getSingleResult();
-        return (User)result;
+        try {
+            Object result = query.getSingleResult();
+            return result != null ? true : false;
+        }catch (Exception exception){
+            return false;
+        }
     }
 
-    public User findByMail(String email) {
+    public User getByEmail(String email){
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<User> cq = cb.createQuery(User.class);
 
         Root<User> user = cq.from(User.class);
-        Predicate emailPredicate = cb.equal(user.get("email"), email);
-        cq.where(emailPredicate);
+        Predicate kullaniciAdiPredicate = cb.equal(user.get("email"), email);
+        cq.where(kullaniciAdiPredicate);
 
         Query query = session.createQuery(cq);
         Object result = query.getSingleResult();
         return (User)result;
     }
+
 }

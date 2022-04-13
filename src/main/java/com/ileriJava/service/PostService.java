@@ -3,6 +3,7 @@ package com.ileriJava.service;
 import com.google.gson.Gson;
 import com.ileriJava.dao.MainDAO;
 import com.ileriJava.dao.PostRepository;
+import com.ileriJava.model.Category;
 import com.ileriJava.model.FaultRecords;
 import com.ileriJava.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +27,25 @@ public class PostService {
     private PostRepository postRepository;
 
     @Transactional(readOnly = false)
-    public void create(String title, String context, HttpServletRequest request) {
+    public FaultRecords create(String title, String context, Long categoryID, HttpServletRequest request) {
+
+        Category category = (Category) mainDAO.loadObject(Category.class, categoryID);
+
         FaultRecords faultRecords = new FaultRecords();
         faultRecords.setContext(context);
-        faultRecords.setFaulttitle(title);
-        faultRecords.setCreationtime(new Date());
-        faultRecords.setIsexpired(false);
-        faultRecords.setIsresolved(false);
+        faultRecords.setTitle(title);
+        faultRecords.setCreationTime(new Date());
+        faultRecords.setIsExpired(false);
+        faultRecords.setIsResolved(false);
+        faultRecords.setCategory(category);
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        faultRecords.setUserid(user);
+        faultRecords.setUser(user);
 
-        mainDAO.saveObject(faultRecords);
+
+        Object object = mainDAO.saveObject(faultRecords);
+        return faultRecords;
     }
 
     public List<FaultRecords> getByUserID(Long userid) {

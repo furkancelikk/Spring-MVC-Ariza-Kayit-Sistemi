@@ -41,7 +41,7 @@ public class CommentService {
         comment.setFaultRecord(faultRecord);
         comment.setUser(user);
         comment.setContext(commentContext);
-        comment.setCreationtime(new Date());
+        comment.setCreationTime(new Date());
 
         Object savedComment = mainDAO.saveObject(comment);
         return comment;

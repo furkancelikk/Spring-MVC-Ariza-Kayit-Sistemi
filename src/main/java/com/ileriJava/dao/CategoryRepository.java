@@ -1,6 +1,6 @@
 package com.ileriJava.dao;
 
-import com.ileriJava.model.Comments;
+import com.ileriJava.model.Category;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -18,24 +17,22 @@ import java.util.List;
  **/
 
 @Repository
-public class CommentRepository {
+public class CategoryRepository {
 
     @Autowired
     SessionFactory sessionFactory;
 
-
-    public List<Comments> findByPostID(Long postID) {
-
+    public List<Category> findAll() {
         Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Comments> cq = cb.createQuery(Comments.class);
-        Root< Comments > commentRoot = cq.from(Comments.class);
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 
-        Predicate postPredicate = cb.equal(commentRoot.get("faultRecord").get("id"), postID);
+        CriteriaQuery<Category> cq = criteriaBuilder.createQuery(Category.class);
 
-        cq.where(postPredicate);
+        Root<Category> categoryRoot = cq.from(Category.class);
 
-        Query query = session.createQuery(cq);
+        cq.select(categoryRoot);
+
+        Query<Category> query = session.createQuery(cq);
         return query.getResultList();
     }
 }

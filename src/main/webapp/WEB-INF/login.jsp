@@ -10,21 +10,22 @@
 <html lang="tr">
 <head>
     <title>Animated Login Form</title>
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
-<img class="wave" src="resources/img/wave.png">
+<img class="wave" src="${pageContext.request.contextPath}/resources/img/wave.png">
 <div class="container">
     <div class="img">
 
     </div>
     <div class="login-content">
-        <form action="/bitirme/login" method="post">
-            <img src="resources/img/avatar.svg">
+        <form id="formLogin" action="${pageContext.request.contextPath}/login" method="post">
+            <img src="${pageContext.request.contextPath}/resources/img/avatar.svg">
             <h2 class="title">Hoşgeldiniz!</h2>
             <div class="input-div one">
                 <div class="i">
@@ -32,7 +33,7 @@
                 </div>
                 <div class="div">
                     <h5>E-mail</h5>
-                    <input type="email" class="input" name="email">
+                    <input required type="email" class="input" id="email">
                 </div>
             </div>
             <div class="input-div pass">
@@ -41,15 +42,35 @@
                 </div>
                 <div class="div">
                     <h5>Şifre</h5>
-                    <input type="password" class="input" name="password">
+                    <input required type="password" class="input" id="password">
                 </div>
             </div>
-            <a href="#">Şifrenizimi Unuttunuz?</a>
+            <p style="display: none;" id="loginMessage"></p>
             <input type="submit" class="btn" value="Giriş Yap">
             <a href="register"><input type="button" class="btn" value="Kayıt Ol"></a>
         </form>
     </div>
 </div>
-<script type="text/javascript" src="resources/js/main.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+
+<script>
+    $("#formLogin").submit(function (event){
+
+        event.preventDefault();
+        $("#loginMessage").hide();
+
+        $.post("${pageContext.request.contextPath}/login", {"email": $("#email").val(), "password": $("#password").val()},
+            function (data, status, xhr){
+                var result = JSON.parse(data);
+
+                $("#loginMessage").text(result.message);
+                $("#loginMessage").show();
+
+                if (result.success == true){
+                    window.location.href = "${pageContext.request.contextPath}/user/home";
+                }
+            });
+    });
+</script>
 </body>
 </html>

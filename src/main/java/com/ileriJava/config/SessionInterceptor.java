@@ -20,9 +20,6 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
         if (user == null){
             response.sendRedirect("/bitirme/login");
             return false;
-//            ModelAndView mav = new ModelAndView();
-//            // eventually populate the model
-//            throw new ModelAndViewDefiningException(mav);
         }
         return true;
     }

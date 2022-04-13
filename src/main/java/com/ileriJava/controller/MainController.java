@@ -26,7 +26,7 @@ public class MainController {
         this.userService = userService;
     }
 
-    @RequestMapping({"/", ""})
+    @RequestMapping({"", "/"})
     public String main(){
         // Burada kullanıcı var ise anasayfaya yok ise logine yönlendirilecek
         return "homepage";

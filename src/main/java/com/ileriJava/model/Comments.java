@@ -1,77 +1,42 @@
 package com.ileriJava.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.ileriJava.model.FaultRecords;
 
 @Entity
 @Table(name = "Comments")
+@Getter
+@Setter
 public class Comments implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "CommentID", nullable = false)
-    private Long commentid;
+    @Column(name = "ID", nullable = false)
+    private Long id;
 
     //yorumun oluşturulma zamanını tutar
-    @Column(name = "CreationTime", nullable = false)
+    @Column(name = "CREATION_TIME", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date creationtime;
+    private Date creationTime;
 
 
     //yorumun içeriğini belirtir
-    @Column(name = "Context", nullable = false)
+    @Column(name = "CONTEXT", nullable = false, columnDefinition = "TEXT")
     private String context;
 
 
     //Bir Kullanıcı birden fazla yorum oluşturabilir
     @ManyToOne
-    @JoinColumn(name = "userID", referencedColumnName = "userid")
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
     //Bir Başlıkta Birden fazla yorum olabilir yorumun hangi başlık altında olduğunu söyler
     @ManyToOne
-    @JoinColumn(name = "FaultID", referencedColumnName = "faultid")
+    @JoinColumn(name = "FAULT_ID", referencedColumnName = "ID")
     private FaultRecords faultRecord;
-
-    public Long getCommentid() {
-        return commentid;
-    }
-
-    public void setCommentid(Long commentid) {
-        this.commentid = commentid;
-    }
-
-    public Date getCreationtime() {
-        return creationtime;
-    }
-
-    public void setCreationtime(Date creationtime) {
-        this.creationtime = creationtime;
-    }
-
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User userid) {
-        this.user = userid;
-    }
-
-    public FaultRecords getFaultRecord() {
-        return faultRecord;
-    }
-
-    public void setFaultRecord(FaultRecords faultRecord) {
-        this.faultRecord = faultRecord;
-    }
 }
