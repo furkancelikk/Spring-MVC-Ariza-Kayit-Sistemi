@@ -2,6 +2,7 @@ package com.ileriJava.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ileriJava.enums.UserRole;
 import com.ileriJava.model.FaultRecords;
 import com.ileriJava.model.User;
 import com.ileriJava.service.PostService;
@@ -65,6 +66,27 @@ public class PostController {
         map.put("data", faultRecord);
         String json = gson.toJson(map);
         return json;
+    }
+    @GetMapping(value="/getAll")
+    public @ResponseBody String getAllRecords(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap<>();
+        if(user.getRole()== UserRole.ADMIN)
+        {
+            List<FaultRecords> faultRecords=postService.getAll();
+            map.put("succes", true);
+            map.put("data", faultRecords);
+        }
+        else
+        {
+            map.put("succes",false);
+        }
+        String json = gson.toJson(map);
+        return json;
+
     }
 
 }

@@ -127,7 +127,11 @@
             data = JSON.parse(data);
             if (status == "success" && data.success == true) {
                 alert("GÜNCELLEME BAŞARILI");
-                window.location.href = "${pageContext.request.contextPath}/user/home";
+                <% User sessionUser = (User) request.getSession().getAttribute("user");%>
+                var role = '<%= sessionUser.getRole().toString()%>';
+                console.log("role", role);
+                console.log("url", "${pageContext.request.contextPath}/" +( role=="ADMIN" ? "admin/home" : "user/home") )
+                window.location.href = "${pageContext.request.contextPath}/" +( role=="ADMIN" ? "admin/home" : "user/home");
             }
         });
 

@@ -26,10 +26,4 @@ public class Category implements Serializable {
 
     @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     private String description;
-
-    // rolü personel olan ve kategori ile ilgilenecek personel
-    // bir personel birden fazla kategoriye bakabilir o nedenle many to one
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    private User personnel;
 }

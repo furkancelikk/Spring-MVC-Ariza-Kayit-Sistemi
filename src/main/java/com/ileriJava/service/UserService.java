@@ -48,6 +48,7 @@ public class UserService {
         return userRepository.getByEmail(email);
     }
 
+
     @Transactional
     public User registerUser(String kullaniciadi, String ad, String soyad, String email, String sifre) {
         User user = new User();

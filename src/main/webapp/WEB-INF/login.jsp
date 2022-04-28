@@ -58,7 +58,6 @@
 
         event.preventDefault();
         $("#loginMessage").hide();
-
         $.post("${pageContext.request.contextPath}/login", {"email": $("#email").val(), "password": $("#password").val()},
             function (data, status, xhr){
                 var result = JSON.parse(data);
@@ -67,8 +66,16 @@
                 $("#loginMessage").show();
 
                 if (result.success == true){
-                    window.location.href = "${pageContext.request.contextPath}/user/home";
+                    if(result.role=="ADMIN")
+                    {
+                        window.location.href = "${pageContext.request.contextPath}/admin/home";
+                    }
+                    else
+                        window.location.href = "${pageContext.request.contextPath}/user/home";
                 }
+
+
+
             });
     });
 </script>

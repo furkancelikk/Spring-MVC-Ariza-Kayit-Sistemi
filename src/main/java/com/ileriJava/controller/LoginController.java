@@ -32,18 +32,18 @@ public class LoginController {
     @PostMapping
     public @ResponseBody String isExist(@RequestParam String email, @RequestParam String password, Model model, HttpServletRequest request, HttpServletResponse response){
         boolean isExist = userService.getByEmailAndSifre(email, password);
+
         Gson gson = new Gson();
         Map<String, Object> map = new HashMap<>();
-
         map.put("success", isExist);
-
         if (isExist){
             User user = userService.getByEmail(email);
             map.put("message", "Giriş başarılı");
-
+            map.put("role",user.getRole());
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
         }
+
         else {
             map.put("message", "Kullanıcı adı veya şifre yanlış");
         }

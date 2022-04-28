@@ -11,66 +11,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Insert title here</title>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <style>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <style>
 
-    .linear{
-      background-image: linear-gradient(to top, rgba(0,0,0), rgba(128,128,128));
-    }
+        .linear {
+            background-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(128, 128, 128, 1));
+        }
 
-  </style>
+    </style>
 
 </head>
 <body style="background: #ececec;">
 
 
-
 <div class="w3-sidebar bg-dark text-center" style="width:20%">
 
-
-  <a href="${pageContext.request.contextPath}/user/home" class="d-block text-decoration-none text-white text-uppercase mt-4 mb-5">
     <% User user = (User) request.getSession().getAttribute("user");%>
-    <h3>
-      <%=
-      user != null ? user.getAd() + " " + user.getSoyad() : ""
-      %>
-    </h3>
 
-    <img src="${pageContext.request.contextPath}/resources/img/avatar.svg" width="200">
-<%--    <p>${pageContext.request.contextPath}</p>--%>
-  </a>
+    <c:choose>
+        <c:when test="${user.getRole().toString()=='USER'}">
+        <a href="${pageContext.request.contextPath}/user/home"
+           class="d-block text-decoration-none text-white text-uppercase mt-4 mb-5">
+            <h3>
+                <%=
+                user != null ? user.getAd() + " " + user.getSoyad() : ""
+                %>
+            </h3>
 
-  <div class="text-left px-2">
+            <img src="${pageContext.request.contextPath}/resources/img/avatar.svg" width="200">
 
-    <ul class="list-group list-unstyled">
+        </a>
 
-      <li> <a href="/user/personal" class="list-group-item bg-dark text-white border-0">Personal</a> </li>
-      <li>  <a href="/user/edu" class="list-group-item bg-dark text-white border-0">Education</a> </li>
-      <li>   <a href="/user/experience" class="list-group-item bg-dark text-white border-0">Experience</a></li>
-      <li>   <a href="/user/reference" class="list-group-item bg-dark text-white border-0">Reference</a></li>
-      <li>  <a href="/user/hobi" class="list-group-item bg-dark text-white border-0">Hobbies</a> </li>
-      <li>  <a href="/user/skill" class="list-group-item bg-dark text-white border-0">Skills</a> </li>
-      <li>   <a id="logout" tabindex="0" style="cursor: pointer;" class="list-group-item bg-dark text-white border-0">Log Out</a></li>
+        </c:when>
+        <c:when test="${user.getRole().toString()=='ADMIN'}">
+        <a href="${pageContext.request.contextPath}/admin/home"
+           class="d-block text-decoration-none text-white text-uppercase mt-4 mb-5">
+            <h3>
+                <%=
+                user != null ? user.getAd() + " " + user.getSoyad() : ""
+                %>
+            </h3>
 
-    </ul>
+            <img src="${pageContext.request.contextPath}/resources/img/avatar.svg" width="200">
 
-  </div>
+        </a>
+
+        </c:when>
+    </c:choose>
+
+
+
+        <div class="text-left px-2">
+
+            <ul class="list-group list-unstyled">
+
+
+                <c:choose>
+                    <c:when test="${user.getRole().toString()=='USER'}">
+                        <li><a href="/user/personal" class="list-group-item bg-dark text-white border-0">Personal</a>
+                        </li>
+                        <li><a href="/user/edu" class="list-group-item bg-dark text-white border-0">Education</a></li>
+                        <li><a href="/user/experience"
+                               class="list-group-item bg-dark text-white border-0">Experience</a></li>
+                        <li><a href="/user/reference" class="list-group-item bg-dark text-white border-0">Reference</a>
+                        </li>
+                        <li><a href="/user/hobi" class="list-group-item bg-dark text-white border-0">Hobbies</a></li>
+                        <li><a href="/user/skill" class="list-group-item bg-dark text-white border-0">Skills</a></li>
+
+                    </c:when>
+                    <c:when test="${user.getRole().toString()=='ADMIN'}">
+
+                        <li><a href="${pageContext.request.contextPath}/admin/home"
+                               class="list-group-item bg-dark text-white border-0">Başlıklar</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/personel"
+                               class="list-group-item bg-dark text-white border-0">Personel İşlemleri</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/kategori"
+                               class="list-group-item bg-dark text-white border-0">Kategori İşlemleri</a></li>
+
+                    </c:when>
+                </c:choose>
+                <li><a id="logout" tabindex="0" style="cursor: pointer;"
+                       class="list-group-item bg-dark text-white border-0">Log Out</a></li>
+            </ul>
+
+
+        </div>
 
 </div>
 
 <script>
-  $("#logout").click(function (){
-    $.post("${pageContext.request.contextPath}/logout", {}, function (data, status, xhr){
-      var result = JSON.parse(data);
-      if (status == "success" && result.success == true) {
-        window.location.href = "${pageContext.request.contextPath}/login";
-      }
+    $("#logout").click(function () {
+        $.post("${pageContext.request.contextPath}/logout", {}, function (data, status, xhr) {
+            var result = JSON.parse(data);
+            if (status == "success" && result.success == true) {
+                window.location.href = "${pageContext.request.contextPath}/login";
+            }
+        });
     });
-  });
 </script>
 </body>
 </html>

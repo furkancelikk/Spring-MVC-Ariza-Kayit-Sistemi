@@ -64,4 +64,9 @@ public class PostService {
         mainDAO.updateObject(faultRecords);
         return faultRecords;
     }
+
+    public List<FaultRecords> getAll() {
+        List<FaultRecords> faultRecords=postRepository.getAll();
+        return faultRecords;
+    }
 }
