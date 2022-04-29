@@ -18,5 +18,9 @@ public class AdminController {
         return "category/addCategory";
     }
 
-
+    @GetMapping(value = "/personel")
+    public String personelIslemleri()
+    {
+        return "admintablo";
+    }
 }

@@ -37,11 +37,11 @@ public class FaultRecords implements Serializable {
     private Boolean isExpired;
 
     //Bir Kullanıcı birden fazla başlık açabilir
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
     private Category category;
 }

@@ -6,6 +6,7 @@ import com.ileriJava.model.Category;
 import com.ileriJava.model.FaultRecords;
 import com.ileriJava.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,32 @@ public class CategoryController {
     @GetMapping(value = "/detay/{id}")
     private String getByID(@PathVariable("id") Long id, Model model){
         Category category = categoryService.getByID(id);
-        model.addAttribute("category", category);
+        Gson gson = new Gson();
+        String strCategory = gson.toJson(category);
+        model.addAttribute("category", strCategory);
         return "category/detay";
     }
+    @PostMapping(value = "/update")
+    public @ResponseBody String update(@RequestParam String strCategory){
+
+        Category category = categoryService.update(strCategory);
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", true);
+        map.put("data", category);
+        String json = gson.toJson(map);
+        return json;
+    }
+    @PostMapping(value="/delete")
+    public @ResponseBody String delete(@RequestParam Long categoryID){
+
+        boolean  success = categoryService.delete(categoryID);
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", success);
+        String json = gson.toJson(map);
+        return json;
+    }
+
+
 }

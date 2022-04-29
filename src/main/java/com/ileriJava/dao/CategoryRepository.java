@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class CategoryRepository {
         CriteriaQuery<Category> cq = criteriaBuilder.createQuery(Category.class);
 
         Root<Category> categoryRoot = cq.from(Category.class);
-
-        cq.select(categoryRoot);
+        Predicate isActivePredicate= criteriaBuilder.equal(categoryRoot.get("isActive"),true);
+        cq.where(isActivePredicate);
 
         Query<Category> query = session.createQuery(cq);
         return query.getResultList();

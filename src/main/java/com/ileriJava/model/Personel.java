@@ -16,7 +16,7 @@ public class Personel{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Category> categories;
 
     @OneToOne(cascade = CascadeType.ALL)

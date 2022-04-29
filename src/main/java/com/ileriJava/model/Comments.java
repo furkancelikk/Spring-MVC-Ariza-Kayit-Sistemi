@@ -31,12 +31,12 @@ public class Comments implements Serializable {
 
 
     //Bir Kullanıcı birden fazla yorum oluşturabilir
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
     //Bir Başlıkta Birden fazla yorum olabilir yorumun hangi başlık altında olduğunu söyler
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "FAULT_ID", referencedColumnName = "ID")
     private FaultRecords faultRecord;
 }

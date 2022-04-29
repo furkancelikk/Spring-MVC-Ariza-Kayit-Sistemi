@@ -1,8 +1,10 @@
 package com.ileriJava.service;
 
+import com.google.gson.Gson;
 import com.ileriJava.dao.CategoryRepository;
 import com.ileriJava.dao.MainDAO;
 import com.ileriJava.model.Category;
+import com.ileriJava.model.FaultRecords;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Struct;
 import java.util.List;
 
 /**
@@ -34,12 +37,38 @@ public class CategoryService {
         Category category = new Category();
         category.setDescription(description);
         category.setName(name);
+        category.setActive(true);
         try {
-            Object saveObject = mainDAO.saveObject(category);
+            mainDAO.saveObject(category);
             return true;
         }catch (Exception exception){
             return false;
         }
+    }
+    @Transactional
+    public  Category update(String strCategory)
+    {
+        Gson gson = new Gson();
+        Category category = gson.fromJson(strCategory, Category.class);
+        mainDAO.updateObject(category);
+        return category;
+    }
+    @Transactional
+    public boolean delete(Long id)
+    {
+        try {
+            Category category = (Category)mainDAO.loadObject(Category.class, id);
+            category.setActive(false);
+            mainDAO.updateObject(category);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            return false;
+        }
+
+
+
     }
 
     public Category getByID(Long id) {

@@ -26,4 +26,7 @@ public class Category implements Serializable {
 
     @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "isActive")
+    private boolean isActive;
 }

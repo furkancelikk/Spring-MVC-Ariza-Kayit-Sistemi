@@ -28,4 +28,9 @@ public class MainDAO {
     public void updateObject(Object obj){
         getCurrentSession().saveOrUpdate(obj);
     }
+
+    public void delete(Object obj)
+    {
+        getCurrentSession().delete(obj);
+    }
 }
