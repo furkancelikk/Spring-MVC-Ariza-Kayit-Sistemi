@@ -37,7 +37,6 @@ public class CategoryService {
         Category category = new Category();
         category.setDescription(description);
         category.setName(name);
-        category.setActive(true);
         try {
             mainDAO.saveObject(category);
             return true;
@@ -58,8 +57,7 @@ public class CategoryService {
     {
         try {
             Category category = (Category)mainDAO.loadObject(Category.class, id);
-            category.setActive(false);
-            mainDAO.updateObject(category);
+            mainDAO.delete(category);
             return true;
         }
         catch (Exception exception)

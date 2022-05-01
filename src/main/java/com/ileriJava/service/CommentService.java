@@ -51,4 +51,15 @@ public class CommentService {
         List<Comments> commentsList = commentRepository.findByPostID(postID);
         return commentsList;
     }
+
+    @Transactional
+    public boolean deleteByID(Long id) {
+        try {
+            Comments comment = (Comments) mainDAO.loadObject(Comments.class, id);
+            mainDAO.delete(comment);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

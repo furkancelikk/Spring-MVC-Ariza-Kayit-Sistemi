@@ -77,16 +77,28 @@ public class PostController {
         if(user.getRole()== UserRole.ADMIN)
         {
             List<FaultRecords> faultRecords=postService.getAll();
-            map.put("succes", true);
+            map.put("success", true);
             map.put("data", faultRecords);
         }
         else
         {
-            map.put("succes",false);
+            map.put("success",false);
         }
         String json = gson.toJson(map);
         return json;
+    }
 
+    @PostMapping(value = "/delete/{faultid}")
+    public @ResponseBody String delete(@PathVariable("faultid") Long faultid){
+        FaultRecords faultRecord = postService.getByID(faultid);
+        Map<String, Object> map = new HashMap<>();
+
+        boolean success = postService.delete(faultRecord);
+
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        map.put("success", success);
+
+        return gson.toJson(map);
     }
 
 }

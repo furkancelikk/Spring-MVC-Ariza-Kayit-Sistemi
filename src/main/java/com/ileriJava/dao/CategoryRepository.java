@@ -30,8 +30,7 @@ public class CategoryRepository {
         CriteriaQuery<Category> cq = criteriaBuilder.createQuery(Category.class);
 
         Root<Category> categoryRoot = cq.from(Category.class);
-        Predicate isActivePredicate= criteriaBuilder.equal(categoryRoot.get("isActive"),true);
-        cq.where(isActivePredicate);
+        cq.select(categoryRoot);
 
         Query<Category> query = session.createQuery(cq);
         return query.getResultList();

@@ -35,7 +35,7 @@
                             </div>
                             <div>
                                 <textarea required style="width: 100%; margin: 10px 0;" class="w3-border w3-padding"
-                                          rows="10" placeholder="Detay" id="categoryDescription"></textarea>
+                                          rows="5" placeholder="Detay" id="categoryDescription"></textarea>
                             </div>
                             <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Post
                             </button>

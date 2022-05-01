@@ -21,6 +21,9 @@
 </head>
 <body style="background: #ececec;">
 
+<%--SESSION USER--%>
+<% User sessionUser = (User) request.getSession().getAttribute("user");%>
+
 <div>
     <%@include file='../../template.jsp' %>
 </div>
@@ -57,7 +60,16 @@
                                 <input class="form-check-input" onchange="handleChangePostIsResolved(this)" type="checkbox" id="isResolved" />
                                 <label class="form-check-label" for="isResolved">Çözüldü</label>
                             </div>
+
+<%--                            ADMIN KULLANICI İÇİN IS EXPIRED ALANI--%>
+                            <div id="isExpiredContainer" class="form-check w3-margin-top w3-margin-bottom adminEnabled">
+                                <input class="form-check-input" onchange="handleChangePostIsExpired(this)" type="checkbox" id="isExpired" />
+                                <label class="form-check-label" for="isExpired">Zaman Aşımı</label>
+                            </div>
+
                             <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Güncelle
+                            </button>
+                            <button id="deletePostButton" onclick="deletePost(this)" type="button" class="w3-button w3-theme adminEnabled"><i class="fa fa-trash"></i> &nbsp;Sil
                             </button>
                         </form>
 
@@ -65,6 +77,7 @@
                             $("#title").val(faultrecord.title);
                             $("#context").val(faultrecord.context);
                             $('#isResolved').prop('checked', faultrecord.isResolved);
+                            $('#isExpired').prop('checked', faultrecord.isExpired);
                         </script>
                     </div>
                 </div>
@@ -73,17 +86,7 @@
 
             <%--            YORUMLAR VE YORUM YAPMA ALANI           --%>
             <div class="w3-col m12" id="commentContainer">
-                <%--                <div class="w3-card w3-round w3-white w3-margin-top w3-margin-left">--%>
-                <%--                    <div class="w3-container">--%>
-                <%--                        <div>--%>
-                <%--                            <textarea disabled required style="width: 100%; margin: 10px 0;"--%>
-                <%--                                      class="w3-border w3-padding" rows="3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ligula tortor, ut finibus velit tempor eu. Cras eleifend pellentesque odio a placerat. Aliquam volutpat ligula sollicitudin lacus consectetur, at tempor sem iaculis. Quisque lacus erat, venenatis id congue at, pulvinar non lorem. Curabitur vel ullamcorper metus. Pellentesque a sagittis eros, non vehicula elit. Aenean varius consequat lacinia.</textarea>--%>
-                <%--                        </div>--%>
-                <%--                        <div>--%>
-                <%--                            <p>Ad Soyad</p>--%>
-                <%--                        </div>--%>
-                <%--                    </div>--%>
-                <%--                </div>--%>
+
             </div>
 
             <div class="w3-col m12">
@@ -113,10 +116,17 @@
 <script>
 
     $(document).ready(function () {
+        var sessionRole = '<%= sessionUser.getRole().toString()%>';
+        if (sessionRole == "ADMIN")
+            $(".adminEnabled").show();
+        else
+            $(".adminEnabled").hide();
+
         getThisPostComments();
-        if (faultrecord.isResolved){
+        if (faultrecord.isResolved || faultrecord.isExpired){
             $("#formComment").hide();
             $("#form input, #form button, #form textarea").prop("disabled", true);
+            $("#deleteComment").prop("disabled", true);
         }
     })
 
@@ -127,10 +137,7 @@
             data = JSON.parse(data);
             if (status == "success" && data.success == true) {
                 alert("GÜNCELLEME BAŞARILI");
-                <% User sessionUser = (User) request.getSession().getAttribute("user");%>
                 var role = '<%= sessionUser.getRole().toString()%>';
-                console.log("role", role);
-                console.log("url", "${pageContext.request.contextPath}/" +( role=="ADMIN" ? "admin/home" : "user/home") )
                 window.location.href = "${pageContext.request.contextPath}/" +( role=="ADMIN" ? "admin/home" : "user/home");
             }
         });
@@ -152,6 +159,30 @@
 
     });
 
+    function deletePost(event){
+        $.post("${pageContext.request.contextPath}/post/delete/" + faultrecord.id, {}, function (data, status, xhr) {
+            var result = JSON.parse(data);
+            if (result.success == true) {
+                alert("Silme Başarılı");
+                var role = '<%= sessionUser.getRole().toString()%>';
+                window.location.href = "${pageContext.request.contextPath}/" +( role=="ADMIN" ? "admin/home" : "user/home");
+            }else {
+                alert("Silerken bir hata oluştu")
+            }
+        });
+    }
+
+    function deleteComment(event, commentID){
+        $.post("${pageContext.request.contextPath}/comment/delete/" + commentID, {}, function (data, status, xhr) {
+            var result = JSON.parse(data);
+            if (result.success == true) {
+                getThisPostComments()
+            }else {
+                alert("Silerken bir hata oluştu");
+            }
+        });
+    }
+
     function handleChangePost(event) {
         faultrecord[event.id] = event.value;
     }
@@ -160,11 +191,16 @@
         faultrecord["isResolved"] = event.checked;
     }
 
+    function handleChangePostIsExpired(event) {
+        faultrecord["isExpired"] = event.checked;
+    }
+
     function getThisPostComments() {
 
         $('#commentContainer').empty()
 
         $.get("${pageContext.request.contextPath}/comment/getByPost?postID=" + faultrecord.id, function (result) {
+            var role = '<%= sessionUser.getRole().toString()%>';
             var r = JSON.parse(result);
             var data = r.data;
             console.log(r, data);
@@ -172,6 +208,12 @@
                 $('#commentContainer').append(
                     '<div class="w3-card w3-round w3-white w3-margin-top w3-margin-left">' +
                     '<div class="w3-container">' +
+                    (
+                        (role == "ADMIN" && !faultrecord.isResolved && !faultrecord.isExpired) ?
+                            ('<div>' +
+                            '<p style="width: 100%; margin: 5px 0; text-align: right; font-size: 18px; color: red;"><i onclick="deleteComment(this, '+item.id+')" id="deleteComment" style="cursor: pointer;" class="fa fa-trash"></i></p>' +
+                            '</div>') : ''
+                    ) +
                     '<div>' +
                     '<p style="width: 100%; margin: 10px 0;" class="w3-padding" rows="3"> ' + item.context + ' </p>' +
                     '</div>' +

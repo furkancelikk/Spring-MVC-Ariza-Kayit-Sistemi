@@ -1,11 +1,13 @@
 package com.ileriJava.service;
 
 import com.google.gson.Gson;
+import com.ileriJava.dao.CommentRepository;
 import com.ileriJava.dao.MainDAO;
 import com.ileriJava.dao.PostRepository;
 import com.ileriJava.model.Category;
 import com.ileriJava.model.FaultRecords;
 import com.ileriJava.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,14 +19,14 @@ import java.util.Date;
 import java.util.List;
 
 
+@RequiredArgsConstructor
 @Service
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
 public class PostService {
 
-    @Autowired
-    private MainDAO mainDAO;
-    @Autowired
-    private PostRepository postRepository;
+    private final MainDAO mainDAO;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional(readOnly = false)
     public FaultRecords create(String title, String context, Long categoryID, HttpServletRequest request) {
@@ -68,5 +70,15 @@ public class PostService {
     public List<FaultRecords> getAll() {
         List<FaultRecords> faultRecords=postRepository.getAll();
         return faultRecords;
+    }
+
+    @Transactional
+    public boolean delete(FaultRecords faultRecords){
+        try {
+            mainDAO.delete(faultRecords);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }
