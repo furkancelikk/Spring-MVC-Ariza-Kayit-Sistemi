@@ -1,5 +1,7 @@
 package com.ileriJava.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,10 +14,15 @@ import java.lang.reflect.Method;
 @Component
 public class RequestInterceptor extends HandlerInterceptorAdapter {
 
+    private static Logger logger = LoggerFactory.getLogger(RequestInterceptor.class);
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HandlerMethod hm = (HandlerMethod) handler;
         Method method = hm.getMethod();
+
+        logger.info("request interceptora dustu");
+
         System.out.println(method.getName() + " isimli metot yurutumunden once");
         return super.preHandle(request, response, handler);
     }

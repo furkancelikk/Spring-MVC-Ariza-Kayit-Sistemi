@@ -14,10 +14,8 @@ public class Personel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Category> categories;
 
     @OneToOne(cascade = CascadeType.ALL)
     private User user;

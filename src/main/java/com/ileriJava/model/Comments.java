@@ -2,6 +2,8 @@ package com.ileriJava.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,12 +33,13 @@ public class Comments implements Serializable {
 
 
     //Bir Kullanıcı birden fazla yorum oluşturabilir
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
     //Bir Başlıkta Birden fazla yorum olabilir yorumun hangi başlık altında olduğunu söyler
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "FAULT_ID", referencedColumnName = "ID")
     private FaultRecords faultRecord;
 }

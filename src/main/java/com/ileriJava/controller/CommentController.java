@@ -48,4 +48,14 @@ public class CommentController {
         String json = gson.toJson(map);
         return json;
     }
+
+    @PostMapping(value = "delete/{commentID}")
+    public @ResponseBody String delete(@PathVariable("commentID") Long id){
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        boolean success = commentService.deleteByID(id);
+        map.put("success", success);
+
+        return gson.toJson(map);
+    }
 }

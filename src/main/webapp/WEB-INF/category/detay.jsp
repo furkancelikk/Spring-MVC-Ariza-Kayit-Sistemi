@@ -50,7 +50,7 @@
                             </div>
                             <div>
                                 <textarea onkeyup="handleChangeCategory(this)" id="description" required
-                                          style="width: 100%; margin: 10px 0;" class="w3-border w3-padding" rows="10"
+                                          style="width: 100%; margin: 10px 0;" class="w3-border w3-padding" rows="5"
                                           placeholder="İçerik"></textarea>
                             </div>
 

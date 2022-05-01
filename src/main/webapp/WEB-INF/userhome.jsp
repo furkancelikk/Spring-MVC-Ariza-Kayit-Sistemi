@@ -122,7 +122,7 @@
                         $('#recordListContainer').append(
                             '<div class="w3-container w3-card w3-white w3-round w3-margin"><br>' +
                             '<span class="w3-right w3-opacity">' + record.creationTime + '</span>' +
-                            '<h4>' + (record.isResolved ?  '[ÇÖZÜLDÜ] ' : '') + record.title + '</h4><br>' +
+                            '<h4>' + (record.isResolved ?  '[ÇÖZÜLDÜ] ' : (record.isExpired ? '[ZAMAN AŞIMI]' : '')) + record.title + '</h4><br>' +
                             '<hr class="w3-clear">' +
                             '<p>' + (record.context?.length > 400 ? record.context.substr(0, 397) + '...': record.context) + '</p>' +
                             '<div class="w3-row-padding" style="margin:0 -16px">' +
