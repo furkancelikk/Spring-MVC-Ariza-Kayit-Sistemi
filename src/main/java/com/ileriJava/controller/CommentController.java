@@ -19,7 +19,7 @@ import java.util.Map;
  **/
 
 @Controller
-@RequestMapping(value = "/comment")
+@RequestMapping(value = "/comment/*")
 public class CommentController {
 
     @Autowired

@@ -20,4 +20,7 @@ public class Personel{
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
+    @OneToMany(mappedBy = "personel", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> categories;
+
 }

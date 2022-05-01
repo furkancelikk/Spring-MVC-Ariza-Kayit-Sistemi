@@ -21,6 +21,6 @@ public class AdminController {
     @GetMapping(value = "/personel")
     public String personelIslemleri()
     {
-        return "admintablo";
+        return "personel/addPersonel";
     }
 }

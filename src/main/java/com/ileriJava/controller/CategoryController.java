@@ -20,7 +20,7 @@ import java.util.Map;
  **/
 
 @Controller
-@RequestMapping(value = "/category")
+@RequestMapping(value = "/category/*")
 public class CategoryController {
 
     @Autowired
