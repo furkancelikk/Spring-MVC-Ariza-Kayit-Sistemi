@@ -65,4 +65,22 @@ public class PersonelService {
     public void update(Personel personel) {
         mainDAO.updateObject(personel);
     }
+
+    @Transactional
+    public boolean deleteByID(Long personelID) {
+        try {
+            Personel personel = (Personel) mainDAO.loadObject(Personel.class, personelID);
+            mainDAO.delete(personel);
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Personel getByID(Long personelID) {
+        Personel personel = (Personel) mainDAO.loadObject(Personel.class, personelID);
+        return personel;
+    }
 }

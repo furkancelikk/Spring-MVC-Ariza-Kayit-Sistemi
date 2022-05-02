@@ -32,11 +32,10 @@
                     <table class="table table-responsive-xl">
                         <thead>
                         <tr>
-                            <th>&nbsp;</th>
                             <th>Email</th>
-                            <th>Username</th>
-                            <th>Status</th>
-                            <th>&nbsp;</th>
+                            <th>Ad Soyad</th>
+                            <th>Detay</th>
+                            <th>Sil</th>
                         </tr>
                         </thead>
                         <tbody id="personelTableBody">
@@ -92,23 +91,16 @@
                 personelList.map(personel =>
                     $('#personelTableBody').append(
                         '<tr class="alert" role="alert">' +
-                        '<td>' +
-                        '<label class="checkbox-wrap checkbox-primary">' +
-                        '<input type="checkbox" checked>' +
-                        '<span class="checkmark"></span>' +
-                        '</label>' +
-                        '</td>' +
-                        '<td class="d-flex align-items-center">' +
-                        '<div class="pl-3 email">' +
-                        '<span>'+personel.user.email+'</span>' +
-                        '<span></span>' +
-                        '</div>' +
-                        '</td>' +
+                        '<td>'+personel.user.email+'</td>' +
                         '<td>'+personel.user.ad + ' ' + personel.user.soyad +'</td>' +
-                        '<td class="status"><span class="active">Active</span></td>' +
                         '<td>' +
-                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                        '<span aria-hidden="true"><i class="fa fa-close"></i></span>' +
+                        '<a type="button" href="${pageContext.request.contextPath}/personel/detay/' + personel.id + '" class="btn btn-primary">' +
+                        '<span aria-hidden="true"><i class="fa fa-pencil"></i> Detay</span>' +
+                        '</a>' +
+                        '</td>' +
+                        '<td>' +
+                        '<button onclick="deletePersonel(this, '+personel.id+')" type="button" class="btn btn-danger">' +
+                        '<span aria-hidden="true"><i class="fa fa-trash"></i> Sil</span>' +
                         '</button>' +
                         '</td>' +
                         '</tr>'
@@ -116,6 +108,30 @@
                 )
             }
 
+        });
+    }
+
+    function deletePersonel(event, personelID){
+        $.post("${pageContext.request.contextPath}/personel/delete/" + personelID, {}, function (data, status, xhr) {
+            var result = JSON.parse(data);
+            if (result.success == true) {
+                alert("SİLME BAŞARILI");
+                getAllPersonel();
+            }else {
+                alert("BİR HATA OLUŞTU");
+            }
+        });
+    }
+
+    function personelDetay(event, personelID){
+        $.get("${pageContext.request.contextPath}/personel/detay" + personelID, function (data, status, xhr) {
+            var result = JSON.parse(data);
+            if (result.success == true) {
+                alert("SİLME BAŞARILI");
+                getAllPersonel();
+            }else {
+                alert("BİR HATA OLUŞTU");
+            }
         });
     }
 </script>
