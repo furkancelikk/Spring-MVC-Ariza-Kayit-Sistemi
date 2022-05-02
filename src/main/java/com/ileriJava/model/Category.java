@@ -2,6 +2,8 @@ package com.ileriJava.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,8 +28,9 @@ public class Category implements Serializable {
 
     @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "PERSONEL_ID", referencedColumnName = "ID")
-    private Personel personel;
+//
+//    @ManyToOne
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @JoinColumn(name = "PERSONEL_ID", referencedColumnName = "ID")
+//    private Personel personel;
 }

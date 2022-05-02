@@ -37,7 +37,7 @@
         <c:when test="${user.getRole().toString()=='USER'}">
         <a href="${pageContext.request.contextPath}/user/home"
            class="d-block text-decoration-none text-white text-uppercase mt-4 mb-5">
-            <h3>
+            <h3 style="color: white;">
                 <%=
                 user != null ? user.getAd() + " " + user.getSoyad() : ""
                 %>
