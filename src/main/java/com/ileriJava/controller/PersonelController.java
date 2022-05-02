@@ -5,6 +5,7 @@ import com.ileriJava.model.Personel;
 import com.ileriJava.service.PersonelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -41,6 +42,42 @@ public class PersonelController {
         Map<String, Object> map = new HashMap<>();
         map.put("success", true);
         map.put("data", personelList);
+        return gson.toJson(map);
+    }
+
+    @PostMapping(value = "/delete/{personelID}")
+    public @ResponseBody String deleteByID(@PathVariable("personelID") Long personelID){
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        boolean success = personelService.deleteByID(personelID);
+        map.put("success", success);
+
+        return gson.toJson(map);
+    }
+
+    @GetMapping(value = "/detay/{personelID}")
+    public String detay(@PathVariable("personelID") Long personelID, Model model){
+        Personel personel = personelService.getByID(personelID);
+        Gson gson = new Gson();
+        String strPersonel = gson.toJson(personel);
+        model.addAttribute("personel", strPersonel);
+        return "personel/detayPersonel";
+    }
+
+    @PostMapping(value = "update")
+    public @ResponseBody String update(@RequestParam String strPersonel){
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            Personel personel = gson.fromJson(strPersonel, Personel.class);
+            personelService.update(personel);
+            map.put("success", true);
+        }catch (Exception e){
+            map.put("success", false);
+        }
+
         return gson.toJson(map);
     }
 }
