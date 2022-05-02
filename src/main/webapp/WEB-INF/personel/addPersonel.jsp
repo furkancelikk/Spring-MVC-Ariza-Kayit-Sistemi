@@ -74,6 +74,10 @@
         </div>
     </div>
 
+    <div>
+        <%@include file='./personelTablo.jsp' %>
+    </div>
+
 </div>
 
 
@@ -103,7 +107,19 @@
             "password": $("#password").val(),
             "categories": $("#category").val().toString(),
         }, function (data, status, xhr) {
-            alert("istek atıldı");
+            var result = JSON.parse(data);
+            if (result.success){
+                alert("Kayıt Başarılı");
+                $("#kullaniciAdi").val("");
+                $("#name").val("");
+                $("#surname").val("");
+                $("#email").val("");
+                $("#password").val("");
+                $("#category").val("");
+            }
+            else
+                alert("Bir Hata Oluştu");
+            getAllPersonel();
         });
 
     });

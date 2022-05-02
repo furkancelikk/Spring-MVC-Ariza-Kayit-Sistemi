@@ -1,6 +1,8 @@
 package com.ileriJava.service;
 
+import com.google.gson.Gson;
 import com.ileriJava.dao.MainDAO;
+import com.ileriJava.dao.PersonelRepository;
 import com.ileriJava.enums.UserRole;
 import com.ileriJava.model.Category;
 import com.ileriJava.model.Personel;
@@ -22,6 +24,7 @@ import java.util.List;
 public class PersonelService {
 
     private final MainDAO mainDAO;
+    private final PersonelRepository personelRepository;
 
     @Transactional
     public boolean create(String kullaniciAdi, String name, String surname, String email, String password, String[] categoryIDs) {
@@ -48,8 +51,18 @@ public class PersonelService {
             mainDAO.saveObject(personel);
             return true;
         }catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
 
+    public List<Personel> getAll() {
+        return personelRepository.findAll();
+    }
+
+    @Transactional
+    public void update(Personel personel) {
+        mainDAO.updateObject(personel);
+    }
 }

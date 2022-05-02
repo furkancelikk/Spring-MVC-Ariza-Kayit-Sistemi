@@ -1,15 +1,14 @@
 package com.ileriJava.controller;
 
 import com.google.gson.Gson;
+import com.ileriJava.model.Personel;
 import com.ileriJava.service.PersonelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +31,16 @@ public class PersonelController {
         Map<String, Object> map = new HashMap<>();
         map.put("success", success);
         Gson gson = new Gson();
+        return gson.toJson(map);
+    }
+
+    @GetMapping(value = "/getAll")
+    public @ResponseBody String getAll(){
+        List<Personel> personelList = personelService.getAll();
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", true);
+        map.put("data", personelList);
         return gson.toJson(map);
     }
 }

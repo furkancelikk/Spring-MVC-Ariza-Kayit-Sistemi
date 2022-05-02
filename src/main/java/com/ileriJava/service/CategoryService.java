@@ -5,6 +5,7 @@ import com.ileriJava.dao.CategoryRepository;
 import com.ileriJava.dao.MainDAO;
 import com.ileriJava.model.Category;
 import com.ileriJava.model.FaultRecords;
+import com.ileriJava.model.Personel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.List;
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
 public class CategoryService {
 
+    private final PersonelService personelService;
     private final CategoryRepository categoryRepository;
     private final MainDAO mainDAO;
 
@@ -52,11 +54,20 @@ public class CategoryService {
         mainDAO.updateObject(category);
         return category;
     }
+
     @Transactional
     public boolean delete(Long id)
     {
         try {
             Category category = (Category)mainDAO.loadObject(Category.class, id);
+            List<Personel> personelList = personelService.getAll();
+            for (Personel personel : personelList){
+                List<Category> categories = personel.getCategories();
+                if (categories.indexOf(category) > -1){
+                    personel.getCategories().remove(category);
+                    personelService.update(personel);
+                }
+            }
             mainDAO.delete(category);
             return true;
         }
