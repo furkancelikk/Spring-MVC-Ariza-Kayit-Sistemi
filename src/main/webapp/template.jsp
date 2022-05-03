@@ -62,6 +62,20 @@
         </a>
 
         </c:when>
+        <c:when test="${user.getRole().toString()=='PERSONNEL'}">
+            <a href="${pageContext.request.contextPath}/personel/home"
+               class="d-block text-decoration-none text-white text-uppercase mt-4 mb-5">
+                <h3>
+                    <%=
+                    user != null ? user.getAd() + " " + user.getSoyad() : ""
+                    %>
+                </h3>
+
+                <img src="${pageContext.request.contextPath}/resources/img/avatar.svg" width="200">
+
+            </a>
+
+        </c:when>
     </c:choose>
 
 
@@ -94,8 +108,30 @@
                                class="list-group-item bg-dark text-white border-0">Kategori İşlemleri</a></li>
 
                     </c:when>
+
+                    <c:when test="${user.getRole().toString()=='PERSONNEL'}">
+                        <script>
+                            var personel = {};
+                            $.get("${pageContext.request.contextPath}/personel/getByUserID/" + ${user.getId()}, function (data) {
+                                var result = JSON.parse(data);
+
+                                if (result.success == true){
+
+                                    personel = result.data;
+                                    result.data.categories.map(category => {
+                                        console.log("category", category);
+                                        $('#lastListElement').before(
+                                            '<li><a href="${pageContext.request.contextPath}/personel/category?categoryID='+category.id+'"' +
+                                            'class="list-group-item bg-dark text-white border-0">'+category.name+'</a></li>'
+                                        );
+                                    })
+                                }
+                            });
+                        </script>
+
+                    </c:when>
                 </c:choose>
-                <li><a id="logout" tabindex="0" style="cursor: pointer;"
+                <li id="lastListElement"><a id="logout" tabindex="0" style="cursor: pointer;"
                        class="list-group-item bg-dark text-white border-0">Log Out</a></li>
             </ul>
 

@@ -43,4 +43,20 @@ public class PostRepository {
 
         return query.getResultList();
     }
+
+    public List<FaultRecords> getByCategoryID(Long categoryID) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        CriteriaQuery<FaultRecords> cq = cb.createQuery(FaultRecords.class);
+
+        Root<FaultRecords> faultRecordsRoot = cq.from(FaultRecords.class);
+
+        Predicate categoryPredicate = cb.equal(faultRecordsRoot.get("category").get("id"), categoryID);
+        cq.where(categoryPredicate);
+
+        Query query = session.createQuery(cq);
+
+        return query.getResultList();
+    }
 }

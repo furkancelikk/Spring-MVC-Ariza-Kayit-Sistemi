@@ -27,7 +27,6 @@ public class CommentService {
 
     private final MainDAO mainDAO;
     private final CommentRepository commentRepository;
-    private final PostService postService;
 
 
     @Transactional
@@ -49,6 +48,11 @@ public class CommentService {
 
     public List<Comments> getByPostID(Long postID) {
         List<Comments> commentsList = commentRepository.findByPostID(postID);
+        return commentsList;
+    }
+
+    public List<Comments> getByUserID(Long userID) {
+        List<Comments> commentsList = commentRepository.getByUserID(userID);
         return commentsList;
     }
 

@@ -36,4 +36,19 @@ public class PersonelRepository {
         return query.getResultList();
     }
 
+    public Personel getByUserID(Long userID) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+
+        CriteriaQuery<Personel> cq = criteriaBuilder.createQuery(Personel.class);
+
+        Root<Personel> personelRoot = cq.from(Personel.class);
+
+        Predicate userIDPredicate = criteriaBuilder.equal(personelRoot.get("user").get("id"), userID);
+
+        cq.where(userIDPredicate);
+
+        Query<Personel> query = session.createQuery(cq);
+        return query.getSingleResult();
+    }
 }

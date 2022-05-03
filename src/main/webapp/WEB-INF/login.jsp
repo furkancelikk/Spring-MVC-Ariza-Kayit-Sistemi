@@ -70,8 +70,12 @@
                     {
                         window.location.href = "${pageContext.request.contextPath}/admin/home";
                     }
-                    else
+                    else if (result.role=="USER"){
                         window.location.href = "${pageContext.request.contextPath}/user/home";
+                    }
+                    else if (result.role=="PERSONNEL"){
+                        window.location.href = "${pageContext.request.contextPath}/personel/home";
+                    }
                 }
 
 
