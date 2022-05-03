@@ -5,6 +5,7 @@ import com.ileriJava.dao.MainDAO;
 import com.ileriJava.dao.PersonelRepository;
 import com.ileriJava.enums.UserRole;
 import com.ileriJava.model.Category;
+import com.ileriJava.model.Comments;
 import com.ileriJava.model.Personel;
 import com.ileriJava.model.User;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class PersonelService {
 
     private final MainDAO mainDAO;
     private final PersonelRepository personelRepository;
+    private final CommentService commentService;
 
     @Transactional
     public boolean create(String kullaniciAdi, String name, String surname, String email, String password, String[] categoryIDs) {
@@ -70,6 +72,10 @@ public class PersonelService {
     public boolean deleteByID(Long personelID) {
         try {
             Personel personel = (Personel) mainDAO.loadObject(Personel.class, personelID);
+            List<Comments> commentsList = commentService.getByUserID(personel.getUser().getId());
+            for (Comments comment: commentsList) {
+                commentService.deleteByID(comment.getId());
+            }
             mainDAO.delete(personel);
             return true;
         }catch (Exception e){
@@ -81,6 +87,16 @@ public class PersonelService {
 
     public Personel getByID(Long personelID) {
         Personel personel = (Personel) mainDAO.loadObject(Personel.class, personelID);
+        return personel;
+    }
+
+    public Personel getByUserID(Long userID) {
+        Personel personel = new Personel();
+        try {
+            personel = personelRepository.getByUserID(userID);
+        }catch (Exception e){
+            personel = null;
+        }
         return personel;
     }
 }

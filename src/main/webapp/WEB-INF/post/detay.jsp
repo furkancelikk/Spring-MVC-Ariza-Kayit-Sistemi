@@ -117,7 +117,7 @@
 
     $(document).ready(function () {
         var sessionRole = '<%= sessionUser.getRole().toString()%>';
-        if (sessionRole == "ADMIN")
+        if (sessionRole == "ADMIN"  || sessionRole == "PERSONNEL")
             $(".adminEnabled").show();
         else
             $(".adminEnabled").hide();
@@ -138,7 +138,7 @@
             if (status == "success" && data.success == true) {
                 alert("GÜNCELLEME BAŞARILI");
                 var role = '<%= sessionUser.getRole().toString()%>';
-                window.location.href = "${pageContext.request.contextPath}/" +( role=="ADMIN" ? "admin/home" : "user/home");
+                window.location.href = "${pageContext.request.contextPath}/" +( role=="ADMIN" ? "admin/home" : (role == "PERSONNEL" ? "personel/home" : "user/home"));
             }
         });
 

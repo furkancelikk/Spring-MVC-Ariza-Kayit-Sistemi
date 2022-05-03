@@ -38,4 +38,18 @@ public class CommentRepository {
         Query query = session.createQuery(cq);
         return query.getResultList();
     }
+
+    public List<Comments> getByUserID(Long userID) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Comments> cq = cb.createQuery(Comments.class);
+        Root< Comments > commentRoot = cq.from(Comments.class);
+
+        Predicate postPredicate = cb.equal(commentRoot.get("user").get("id"), userID);
+
+        cq.where(postPredicate);
+
+        Query query = session.createQuery(cq);
+        return query.getResultList();
+    }
 }

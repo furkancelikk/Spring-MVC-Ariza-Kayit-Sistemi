@@ -3,9 +3,13 @@ package com.ileriJava.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ileriJava.enums.UserRole;
+import com.ileriJava.model.Category;
 import com.ileriJava.model.FaultRecords;
+import com.ileriJava.model.Personel;
 import com.ileriJava.model.User;
+import com.ileriJava.service.PersonelService;
 import com.ileriJava.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/post/*")
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
     @PostMapping(value = "/create")
     public @ResponseBody String createPost(@RequestParam String title, @RequestParam String context, @RequestParam Long categoryID, HttpServletRequest request, HttpServletResponse response){
@@ -100,5 +104,40 @@ public class PostController {
 
         return gson.toJson(map);
     }
+
+    @GetMapping(value = "/getPostByCategory/{categoryID}")
+    public @ResponseBody String getByCategoryID(@PathVariable("categoryID") Long categoryID){
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        List<FaultRecords> faultRecords = postService.getByCategoryID(categoryID);
+
+        map.put("success", true);
+        map.put("data", faultRecords);
+
+        return gson.toJson(map);
+    }
+
+    @GetMapping(value="/getAllPersonelPost")
+    public @ResponseBody String getAllPersonelPost(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap<>();
+        if(user.getRole()== UserRole.PERSONNEL)
+        {
+            List<FaultRecords> faultRecords=postService.getAllPersonelPost(user.getId());
+            map.put("success", true);
+            map.put("data", faultRecords);
+        }
+        else
+        {
+            map.put("success",false);
+        }
+        String json = gson.toJson(map);
+        return json;
+    }
+
 
 }

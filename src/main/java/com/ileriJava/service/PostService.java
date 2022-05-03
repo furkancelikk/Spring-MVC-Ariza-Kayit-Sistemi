@@ -6,6 +6,7 @@ import com.ileriJava.dao.MainDAO;
 import com.ileriJava.dao.PostRepository;
 import com.ileriJava.model.Category;
 import com.ileriJava.model.FaultRecords;
+import com.ileriJava.model.Personel;
 import com.ileriJava.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +28,8 @@ public class PostService {
 
     private final MainDAO mainDAO;
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
+    private final PersonelService personelService;
+
 
     @Transactional(readOnly = false)
     public FaultRecords create(String title, String context, Long categoryID, HttpServletRequest request) {
@@ -80,5 +83,21 @@ public class PostService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    public List<FaultRecords> getByCategoryID(Long categoryID) {
+        return postRepository.getByCategoryID(categoryID);
+    }
+
+    public List<FaultRecords> getAllPersonelPost(Long userID) {
+        Personel personel = personelService.getByUserID(userID);
+        List<Category> categories = personel.getCategories();
+
+        List<FaultRecords> faultRecords = new ArrayList<>();
+
+        for (Category category : categories) {
+            faultRecords.addAll(getByCategoryID(category.getId()));
+        }
+        return faultRecords;
     }
 }
