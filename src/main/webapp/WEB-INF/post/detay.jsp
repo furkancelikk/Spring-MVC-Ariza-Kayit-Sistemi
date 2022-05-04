@@ -153,10 +153,20 @@
 
     $(document).ready(function () {
         var sessionRole = '<%= sessionUser.getRole().toString()%>';
-        if (sessionRole == "ADMIN"  || sessionRole == "PERSONNEL")
+        if (sessionRole == "ADMIN"){
             $(".adminEnabled").show();
-        else
+            $("#title").removeAttr('disabled');
+            $("#context").removeAttr('disabled');
+        }
+        else if (sessionRole == "USER"){
             $(".adminEnabled").hide();
+            $("#title").removeAttr('disabled');
+            $("#context").removeAttr('disabled');
+        }else {
+            $(".adminEnabled").hide();
+            $("#title").attr('disabled','disabled');
+            $("#context").attr('disabled','disabled');
+        }
 
         getThisPostComments();
         if (faultrecord.isResolved || faultrecord.isExpired){

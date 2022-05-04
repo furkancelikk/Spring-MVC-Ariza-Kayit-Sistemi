@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Spring MVC 5 Örneği</title>
+  <title>Arıza Kayıt Sistemi</title>
 </head>
 <body>
 <h1>Beklenmedik bir hata oluştu.</h1>
