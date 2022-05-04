@@ -38,13 +38,17 @@ public class CommentController {
     }
 
     @GetMapping(value = "/getByPost")
-    public @ResponseBody String getByPost(@RequestParam Long postID){
-        List<Comments> commentList = commentService.getByPostID(postID);
+    public @ResponseBody String getByPost(@RequestParam Long postID, @RequestParam Integer start, @RequestParam Integer limit){
+        List<Comments> commentList = commentService.getByPostIDPagination(postID, start, limit);
+        Integer totalCount = commentService.getAllByPostID(postID).size();
+
         Gson gson = new Gson();
 
         Map<String, Object> map = new HashMap<>();
         map.put("success", true);
         map.put("data", commentList);
+        map.put("totalCount", totalCount);
+
         String json = gson.toJson(map);
         return json;
     }

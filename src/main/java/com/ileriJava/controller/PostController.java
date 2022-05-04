@@ -72,7 +72,7 @@ public class PostController {
         return json;
     }
     @GetMapping(value="/getAll")
-    public @ResponseBody String getAllRecords(HttpServletRequest request)
+    public @ResponseBody String getAllRecords(HttpServletRequest request, @RequestParam Integer start, @RequestParam Integer limit)
     {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
@@ -80,9 +80,12 @@ public class PostController {
         Map<String, Object> map = new HashMap<>();
         if(user.getRole()== UserRole.ADMIN)
         {
-            List<FaultRecords> faultRecords=postService.getAll();
+            List<FaultRecords> faultRecords=postService.getAll(start, limit);
+            Integer totalCount = postService.getAllTotalCount();
+
             map.put("success", true);
             map.put("data", faultRecords);
+            map.put("totalCount", totalCount);
         }
         else
         {

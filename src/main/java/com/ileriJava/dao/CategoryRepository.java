@@ -35,4 +35,20 @@ public class CategoryRepository {
         Query<Category> query = session.createQuery(cq);
         return query.getResultList();
     }
+
+    public List<Category> findAllPagination(Integer start, Integer limit) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+
+        CriteriaQuery<Category> cq = criteriaBuilder.createQuery(Category.class);
+
+        Root<Category> categoryRoot = cq.from(Category.class);
+        cq.select(categoryRoot);
+
+        Query<Category> query = session.createQuery(cq);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+
+        return query.getResultList();
+    }
 }
