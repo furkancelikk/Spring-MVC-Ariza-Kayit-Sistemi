@@ -12,7 +12,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <title>Arıza Kayıt Sistemi</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
           integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
@@ -87,15 +87,15 @@
 
                 <c:choose>
                     <c:when test="${user.getRole().toString()=='USER'}">
-                        <li><a href="/user/personal" class="list-group-item bg-dark text-white border-0">Personal</a>
+                        <li><a href="${pageContext.request.contextPath}/user/home" class="list-group-item bg-dark text-white border-0">Anasayfa</a>
                         </li>
-                        <li><a href="/user/edu" class="list-group-item bg-dark text-white border-0">Education</a></li>
-                        <li><a href="/user/experience"
-                               class="list-group-item bg-dark text-white border-0">Experience</a></li>
-                        <li><a href="/user/reference" class="list-group-item bg-dark text-white border-0">Reference</a>
-                        </li>
-                        <li><a href="/user/hobi" class="list-group-item bg-dark text-white border-0">Hobbies</a></li>
-                        <li><a href="/user/skill" class="list-group-item bg-dark text-white border-0">Skills</a></li>
+<%--                        <li><a href="/user/edu" class="list-group-item bg-dark text-white border-0">Education</a></li>--%>
+<%--                        <li><a href="/user/experience"--%>
+<%--                               class="list-group-item bg-dark text-white border-0">Experience</a></li>--%>
+<%--                        <li><a href="/user/reference" class="list-group-item bg-dark text-white border-0">Reference</a>--%>
+<%--                        </li>--%>
+<%--                        <li><a href="/user/hobi" class="list-group-item bg-dark text-white border-0">Hobbies</a></li>--%>
+<%--                        <li><a href="/user/skill" class="list-group-item bg-dark text-white border-0">Skills</a></li>--%>
 
                     </c:when>
                     <c:when test="${user.getRole().toString()=='ADMIN'}">
@@ -110,6 +110,10 @@
                     </c:when>
 
                     <c:when test="${user.getRole().toString()=='PERSONNEL'}">
+
+                        <li><a href="${pageContext.request.contextPath}/personel/home"
+                               class="list-group-item bg-dark text-white border-0">Anasayfa</a></li>
+
                         <script>
                             var personel = {};
                             $.get("${pageContext.request.contextPath}/personel/getByUserID/" + ${user.getId()}, function (data) {

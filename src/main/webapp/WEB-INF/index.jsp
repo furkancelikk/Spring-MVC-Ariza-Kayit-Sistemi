@@ -11,7 +11,7 @@
 <%--<%@ page pageEncoding="UTF-8" %>--%>
 <html>
 <head>
-    <title>Title</title>
+    <title>Arıza Kayıt Sistemi</title>
 </head>
 <body>
 

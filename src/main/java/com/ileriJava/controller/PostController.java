@@ -42,12 +42,22 @@ public class PostController {
     }
 
     @GetMapping(value = "/getByCurrentUser")
-    public @ResponseBody String getByUserID(HttpServletRequest request, HttpServletResponse response){
-        List<FaultRecords> recordsList = new ArrayList<>();
+    public @ResponseBody String getByUserID(HttpServletRequest request, @RequestParam Integer start, @RequestParam Integer limit){
+
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        recordsList = postService.getByUserID(user.getId());
-        String json = new Gson().toJson(recordsList);
+
+        List<FaultRecords> recordsList = postService.getByUserIDPagination(user.getId(), start, limit);
+        Integer totalCount = postService.getByUserID(user.getId()).size();
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("success", true);
+        map.put("data", recordsList);
+        map.put("totalCount", totalCount);
+
+        String json = new Gson().toJson(map);
         return json;
     }
 
@@ -109,14 +119,16 @@ public class PostController {
     }
 
     @GetMapping(value = "/getPostByCategory/{categoryID}")
-    public @ResponseBody String getByCategoryID(@PathVariable("categoryID") Long categoryID){
+    public @ResponseBody String getByCategoryID(@PathVariable("categoryID") Long categoryID, @RequestParam Integer start, @RequestParam Integer limit){
         Map<String, Object> map = new HashMap<>();
         Gson gson = new Gson();
 
-        List<FaultRecords> faultRecords = postService.getByCategoryID(categoryID);
+        List<FaultRecords> faultRecords = postService.getByCategoryIDPagination(categoryID, start, limit);
+        Integer totalCount = postService.getByCategoryID(categoryID).size();
 
         map.put("success", true);
         map.put("data", faultRecords);
+        map.put("totalCount", totalCount);
 
         return gson.toJson(map);
     }

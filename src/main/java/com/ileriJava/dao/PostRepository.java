@@ -74,4 +74,38 @@ public class PostRepository {
 
         return query.getResultList();
     }
+
+    public List<FaultRecords> getByCategoryIdPagination(Long categoryID, Integer start, Integer limit) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        CriteriaQuery<FaultRecords> cq = cb.createQuery(FaultRecords.class);
+
+        Root<FaultRecords> faultRecordsRoot = cq.from(FaultRecords.class);
+
+        Predicate categoryPredicate = cb.equal(faultRecordsRoot.get("category").get("id"), categoryID);
+        cq.where(categoryPredicate);
+
+        Query query = session.createQuery(cq);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+
+        return query.getResultList();
+    }
+
+    public List<FaultRecords> findByUserIDPagination(Long userID, Integer start, Integer limit) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<FaultRecords> cq = cb.createQuery(FaultRecords.class);
+
+        Root<FaultRecords> faultRecordsRoot = cq.from(FaultRecords.class);
+        Predicate idPredicate = cb.equal(faultRecordsRoot.get("user").get("id"), userID);
+        cq.where(idPredicate);
+
+        Query query = session.createQuery(cq);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+
+        return query.getResultList();
+    }
 }

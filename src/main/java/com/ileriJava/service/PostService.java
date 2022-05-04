@@ -57,6 +57,10 @@ public class PostService {
         return postRepository.findByUserID(userid);
     }
 
+    public List<FaultRecords> getByUserIDPagination(Long userid, Integer start, Integer limit) {
+        return postRepository.findByUserIDPagination(userid, start, limit);
+    }
+
     public FaultRecords getByID(Long faultid) {
         FaultRecords record = (FaultRecords) mainDAO.loadObject(FaultRecords.class, faultid);
         return record;
@@ -87,6 +91,10 @@ public class PostService {
 
     public List<FaultRecords> getByCategoryID(Long categoryID) {
         return postRepository.getByCategoryID(categoryID);
+    }
+
+    public List<FaultRecords> getByCategoryIDPagination(Long categoryID, Integer start, Integer limit) {
+        return postRepository.getByCategoryIdPagination(categoryID, start, limit);
     }
 
     public List<FaultRecords> getAllPersonelPost(Long userID) {
