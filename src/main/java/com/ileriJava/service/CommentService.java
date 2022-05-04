@@ -46,8 +46,8 @@ public class CommentService {
         return comment;
     }
 
-    public List<Comments> getByPostID(Long postID) {
-        List<Comments> commentsList = commentRepository.findByPostID(postID);
+    public List<Comments> getByPostIDPagination(Long postID, Integer start, Integer limit) {
+        List<Comments> commentsList = commentRepository.findByPostIDPagination(postID, start, limit);
         return commentsList;
     }
 
@@ -65,5 +65,9 @@ public class CommentService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    public List<Comments> getAllByPostID(Long postID){
+        return commentRepository.getAllByPostID(postID);
     }
 }

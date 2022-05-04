@@ -38,6 +38,21 @@ public class CategoryController {
         return gson.toJson(map);
     }
 
+    @GetMapping(value = "/getAllPagination")
+    public @ResponseBody String getAllPagination(@RequestParam Integer start, @RequestParam Integer limit){
+        List<Category> categories = categoryService.getAllPagination(start, limit);
+        Integer totalCount = categoryService.getAll().size();
+
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("success", true);
+        map.put("data", categories);
+        map.put("totalCount", totalCount);
+
+        return gson.toJson(map);
+    }
+
     @PostMapping(value = "/create")
     public @ResponseBody String create(@RequestParam String name, @RequestParam String description){
         Boolean success = categoryService.create(name, description);

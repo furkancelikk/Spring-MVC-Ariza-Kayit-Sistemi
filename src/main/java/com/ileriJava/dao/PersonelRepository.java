@@ -36,6 +36,22 @@ public class PersonelRepository {
         return query.getResultList();
     }
 
+    public List<Personel> findAllPagination(Integer start, Integer limit) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+
+        CriteriaQuery<Personel> cq = criteriaBuilder.createQuery(Personel.class);
+
+        Root<Personel> personelRoot = cq.from(Personel.class);
+        cq.select(personelRoot);
+
+        Query<Personel> query = session.createQuery(cq);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+
+        return query.getResultList();
+    }
+
     public Personel getByUserID(Long userID) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

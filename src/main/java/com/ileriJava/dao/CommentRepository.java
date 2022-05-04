@@ -23,8 +23,7 @@ public class CommentRepository {
     @Autowired
     SessionFactory sessionFactory;
 
-
-    public List<Comments> findByPostID(Long postID) {
+    public List<Comments> getAllByPostID(Long postID) {
 
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -36,6 +35,26 @@ public class CommentRepository {
         cq.where(postPredicate);
 
         Query query = session.createQuery(cq);
+
+        return query.getResultList();
+    }
+
+
+    public List<Comments> findByPostIDPagination(Long postID, Integer start, Integer limit) {
+
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Comments> cq = cb.createQuery(Comments.class);
+        Root< Comments > commentRoot = cq.from(Comments.class);
+
+        Predicate postPredicate = cb.equal(commentRoot.get("faultRecord").get("id"), postID);
+
+        cq.where(postPredicate);
+
+        Query query = session.createQuery(cq);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+
         return query.getResultList();
     }
 

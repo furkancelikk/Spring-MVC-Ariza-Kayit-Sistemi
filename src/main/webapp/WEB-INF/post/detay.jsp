@@ -11,13 +11,44 @@
 <%--<%@ page pageEncoding="UTF-8" %>--%>
 <html>
 <head>
-    <title>Title</title>
+    <title>Arıza Kayıt Sistemi</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <style>
+        .pagination {
+            display: inline-block;
+            margin-top: 1em;
+            margin-bottom: 1.5em;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+    </style>
+    <script>
+        var start = 0;
+        var limit = 5;
+        var totalCount = 0;
+        var totalPages = 0;
+        var activePage = 1;
+        var rowsPerCount = 5;
+    </script>
+
 </head>
 <body style="background: #ececec;">
 
@@ -89,7 +120,12 @@
 
             </div>
 
+
             <div class="w3-col m12">
+                <div class="pagination">
+                    <%--        <a href="#">&laquo;</a>--%>
+                    <%--        <a href="#">&raquo;</a>--%>
+                </div>
                 <%--                YORUM YAPMA ALANI           --%>
                 <div class="w3-card w3-round w3-white w3-margin-top w3-margin-left w3-margin-bottom">
                     <div class="w3-container">
@@ -199,11 +235,25 @@
 
         $('#commentContainer').empty()
 
-        $.get("${pageContext.request.contextPath}/comment/getByPost?postID=" + faultrecord.id, function (result) {
+        $.get("${pageContext.request.contextPath}/comment/getByPost?postID=" + faultrecord.id +"&start=" + start + "&limit=" + limit, function (result) {
             var role = '<%= sessionUser.getRole().toString()%>';
             var r = JSON.parse(result);
             var data = r.data;
-            console.log(r, data);
+
+            totalCount = r.totalCount;
+            if (totalCount < limit)
+                totalPages = 1
+            else
+                totalPages = (totalCount%(limit) ==  0) ? (totalCount/(limit)) : (parseInt(totalCount/(limit)) + 1);
+            $('.pagination').empty();
+            if (activePage != 1)
+                $('.pagination').append('<a onclick="handleBackPagination()">&laquo;</a>')
+            for (let i = 1; i < totalPages + 1; i++) {
+                $('.pagination').append(' <a onclick="handlePagination(this)"' + (i == activePage ? ('class="active"') : '') + ' >'+i+'</a>')
+            }
+            if (activePage != totalPages)
+                $('.pagination').append('<a onclick="handleForwardPagination()">&raquo;</a>')
+
             data.map(item =>
                 $('#commentContainer').append(
                     '<div class="w3-card w3-round w3-white w3-margin-top w3-margin-left">' +
@@ -227,6 +277,24 @@
                 )
             )
         });
+    }
+
+    function handlePagination(event){
+        activePage = parseInt(event.innerHTML);
+        start = (activePage - 1) * limit;
+        getThisPostComments();
+    }
+
+    function handleBackPagination(){
+        activePage -= 1;
+        start = (activePage - 1) * limit;
+        getThisPostComments();
+    }
+
+    function handleForwardPagination(){
+        activePage += 1;
+        start = (activePage - 1) * limit;
+        getThisPostComments();
     }
 </script>
 </body>

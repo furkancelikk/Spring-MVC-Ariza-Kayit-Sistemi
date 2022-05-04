@@ -17,6 +17,34 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/personelTablo/css/style.css">
+    <style>
+        .pagination {
+            display: inline-block;
+            margin-top: 1em;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+    </style>
+    <script>
+        var start = 0;
+        var limit = 5;
+        var totalCount = 0;
+        var totalPages = 0;
+        var activePage = 1;
+        var rowsPerCount = 5;
+    </script>
 </head>
 <body>
 <section class="ftco-section">
@@ -63,6 +91,10 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="pagination">
+                    <%--        <a href="#">&laquo;</a>--%>
+                    <%--        <a href="#">&raquo;</a>--%>
+                </div>
             </div>
         </div>
     </div>
@@ -84,9 +116,24 @@
     function getAllPersonel() {
         $('#personelTableBody').empty();
 
-        $.get("${pageContext.request.contextPath}/personel/getAll", function (data) {
+        $.get("${pageContext.request.contextPath}/personel/getAll?start=" + start + "&limit=" + limit, function (data) {
             var result = JSON.parse(data);
             if (result.success == true) {
+
+                totalCount = result.totalCount;
+                if (totalCount < limit)
+                    totalPages = 1
+                else
+                    totalPages = (totalCount%(limit) ==  0) ? (totalCount/(limit)) : (parseInt(totalCount/(limit)) + 1);
+                $('.pagination').empty();
+                if (activePage != 1)
+                    $('.pagination').append('<a onclick="handleBackPagination()">&laquo;</a>')
+                for (let i = 1; i < totalPages + 1; i++) {
+                    $('.pagination').append(' <a onclick="handlePagination(this)"' + (i == activePage ? ('class="active"') : '') + ' >'+i+'</a>')
+                }
+                if (activePage != totalPages)
+                    $('.pagination').append('<a onclick="handleForwardPagination()">&raquo;</a>')
+
                 var personelList = result.data;
                 personelList.map(personel =>
                     $('#personelTableBody').append(
@@ -134,6 +181,25 @@
             }
         });
     }
+
+    function handlePagination(event){
+        activePage = parseInt(event.innerHTML);
+        start = (activePage - 1) * limit;
+        getAllPersonel();
+    }
+
+    function handleBackPagination(){
+        activePage -= 1;
+        start = (activePage - 1) * limit;
+        getAllPersonel();
+    }
+
+    function handleForwardPagination(){
+        activePage += 1;
+        start = (activePage - 1) * limit;
+        getAllPersonel();
+    }
+
 </script>
 
 </body>

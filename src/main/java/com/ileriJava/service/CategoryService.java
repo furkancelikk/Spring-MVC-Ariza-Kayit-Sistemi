@@ -90,4 +90,9 @@ public class CategoryService {
 
         return category;
     }
+
+    public List<Category> getAllPagination(Integer start, Integer limit) {
+        List<Category> categories = categoryRepository.findAllPagination(start, limit);
+        return categories;
+    }
 }

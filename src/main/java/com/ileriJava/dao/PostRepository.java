@@ -33,7 +33,7 @@ public class PostRepository {
         return query.getResultList();
     }
 
-    public List<FaultRecords> getAll() {
+    public List<FaultRecords> getAll(Integer start, Integer limit) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<FaultRecords> cq = cb.createQuery(FaultRecords.class);
@@ -41,7 +41,22 @@ public class PostRepository {
         cq.select(faultRecordsRoot);
         Query query = session.createQuery(cq);
 
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+
         return query.getResultList();
+    }
+
+    public Integer getTotalCount() {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<FaultRecords> cq = cb.createQuery(FaultRecords.class);
+        Root<FaultRecords> faultRecordsRoot = cq.from(FaultRecords.class);
+        cq.select(faultRecordsRoot);
+        Query query = session.createQuery(cq);
+
+
+        return query.getResultList().size();
     }
 
     public List<FaultRecords> getByCategoryID(Long categoryID) {

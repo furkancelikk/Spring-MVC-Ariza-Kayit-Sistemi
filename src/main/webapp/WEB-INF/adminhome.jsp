@@ -8,6 +8,33 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
     </script>
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+    </style>
+    <script>
+        var start = 0;
+        var limit = 5;
+        var totalCount = 0;
+        var totalPages = 0;
+        var activePage = 1;
+        var rowsPerCount = 5;
+    </script>
 </head>
 <body style="background: #ececec;">
 
@@ -40,13 +67,16 @@
     <div id="postContainer">
 
     </div>
+    <div class="pagination">
+<%--        <a href="#">&laquo;</a>--%>
+<%--        <a href="#">&raquo;</a>--%>
+    </div>
 </div>
 
 <script>
 
     $(document).ready(function () {
         getAllPost();
-
     });
 
 
@@ -54,10 +84,24 @@
     function getAllPost() {
         $('#postContainer').empty();
 
-        $.get("${pageContext.request.contextPath}/post/getAll", function (data) {
+        $.get("${pageContext.request.contextPath}/post/getAll?start=" + start + "&limit=" + limit, function (data) {
             var result = JSON.parse(data);
             if(result.success==true)
             {
+                totalCount = result.totalCount;
+                if (totalCount < limit)
+                    totalPages = 1
+                else
+                    totalPages = (totalCount%(limit) ==  0) ? (totalCount/(limit)) : (parseInt(totalCount/(limit)) + 1);
+                $('.pagination').empty();
+                if (activePage != 1)
+                    $('.pagination').append('<a onclick="handleBackPagination()">&laquo;</a>')
+                for (let i = 1; i < totalPages + 1; i++) {
+                    $('.pagination').append(' <a onclick="handlePagination(this)"' + (i == activePage ? ('class="active"') : '') + ' >'+i+'</a>')
+                }
+                if (activePage != totalPages)
+                    $('.pagination').append('<a onclick="handleForwardPagination()">&raquo;</a>')
+
                 var recordList=result.data;
                 recordList.map(record =>
                     $('#postContainer').append(
@@ -77,6 +121,24 @@
             }
 
         });
+    }
+
+    function handlePagination(event){
+        activePage = parseInt(event.innerHTML);
+        start = (activePage - 1) * limit;
+        getAllPost();
+    }
+
+    function handleBackPagination(){
+        activePage -= 1;
+        start = (activePage - 1) * limit;
+        getAllPost();
+    }
+
+    function handleForwardPagination(){
+        activePage += 1;
+        start = (activePage - 1) * limit;
+        getAllPost();
     }
 </script>
 </body>

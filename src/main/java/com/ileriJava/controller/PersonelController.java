@@ -44,12 +44,14 @@ public class PersonelController {
     }
 
     @GetMapping(value = "/getAll")
-    public @ResponseBody String getAll(){
-        List<Personel> personelList = personelService.getAll();
+    public @ResponseBody String getAll(@RequestParam Integer start, @RequestParam Integer limit){
+        List<Personel> personelList = personelService.getAllPagination(start, limit);
+        Integer totalCount = personelService.getAll().size();
         Gson gson = new Gson();
         Map<String, Object> map = new HashMap<>();
         map.put("success", true);
         map.put("data", personelList);
+        map.put("totalCount", totalCount);
         return gson.toJson(map);
     }
 

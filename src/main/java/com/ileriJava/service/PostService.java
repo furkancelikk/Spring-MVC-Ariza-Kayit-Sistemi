@@ -70,8 +70,8 @@ public class PostService {
         return faultRecords;
     }
 
-    public List<FaultRecords> getAll() {
-        List<FaultRecords> faultRecords=postRepository.getAll();
+    public List<FaultRecords> getAll(Integer start, Integer limit) {
+        List<FaultRecords> faultRecords=postRepository.getAll(start, limit);
         return faultRecords;
     }
 
@@ -99,5 +99,9 @@ public class PostService {
             faultRecords.addAll(getByCategoryID(category.getId()));
         }
         return faultRecords;
+    }
+
+    public Integer getAllTotalCount(){
+        return postRepository.getTotalCount();
     }
 }

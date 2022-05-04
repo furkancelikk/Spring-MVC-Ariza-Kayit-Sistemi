@@ -63,6 +63,10 @@ public class PersonelService {
         return personelRepository.findAll();
     }
 
+    public List<Personel> getAllPagination(Integer start, Integer limit) {
+        return personelRepository.findAllPagination(start, limit);
+    }
+
     @Transactional
     public void update(Personel personel) {
         mainDAO.updateObject(personel);
