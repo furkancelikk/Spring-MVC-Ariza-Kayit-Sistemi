@@ -202,6 +202,25 @@
 <!--      <version>5.4.6</version>-->
 <!--    </dependency>-->
 
+
+
+<!--    c3p0-->
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-c3p0</artifactId>
+      <version>5.2.12.Final</version>
+    </dependency>
+
+    <!-- c3p0 -->
+    <dependency>
+      <groupId>com.mchange</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.5.2</version>
+    </dependency>
+
+
+
   </dependencies>
 
 
