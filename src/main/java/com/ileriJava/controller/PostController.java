@@ -134,7 +134,7 @@ public class PostController {
     }
 
     @GetMapping(value="/getAllPersonelPost")
-    public @ResponseBody String getAllPersonelPost(HttpServletRequest request)
+    public @ResponseBody String getAllPersonelPost(HttpServletRequest request, @RequestParam Integer start, @RequestParam Integer limit)
     {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
@@ -142,9 +142,11 @@ public class PostController {
         Map<String, Object> map = new HashMap<>();
         if(user.getRole()== UserRole.PERSONNEL)
         {
-            List<FaultRecords> faultRecords=postService.getAllPersonelPost(user.getId());
+            List<FaultRecords> faultRecords=postService.getAllPersonelPost(user.getId(), start, limit);
+            Integer totalCount = postService.getPersonelPostTotalCount(user.getId());
             map.put("success", true);
             map.put("data", faultRecords);
+            map.put("totalCount", totalCount);
         }
         else
         {

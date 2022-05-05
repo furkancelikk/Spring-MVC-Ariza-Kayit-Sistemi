@@ -97,7 +97,7 @@ public class PostService {
         return postRepository.getByCategoryIdPagination(categoryID, start, limit);
     }
 
-    public List<FaultRecords> getAllPersonelPost(Long userID) {
+    public List<FaultRecords> getAllPersonelPost(Long userID, Integer start, Integer limit) {
         Personel personel = personelService.getByUserID(userID);
         List<Category> categories = personel.getCategories();
 
@@ -106,7 +106,25 @@ public class PostService {
         for (Category category : categories) {
             faultRecords.addAll(getByCategoryID(category.getId()));
         }
-        return faultRecords;
+
+        int lastIndex = (start + limit) > faultRecords.size() ? (faultRecords.size()) : (start + limit);
+
+        List<FaultRecords> subList = faultRecords.subList(start, lastIndex);
+
+        return subList;
+    }
+
+    public Integer getPersonelPostTotalCount(Long userID) {
+        Personel personel = personelService.getByUserID(userID);
+        List<Category> categories = personel.getCategories();
+
+        List<FaultRecords> faultRecords = new ArrayList<>();
+
+        for (Category category : categories) {
+            faultRecords.addAll(getByCategoryID(category.getId()));
+        }
+
+        return faultRecords.size();
     }
 
     public Integer getAllTotalCount(){
