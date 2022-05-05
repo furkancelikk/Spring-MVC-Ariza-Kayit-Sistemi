@@ -1,5 +1,6 @@
 package com.ileriJava.config;
 
+import com.ileriJava.log.RequestLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,17 +22,19 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
         HandlerMethod hm = (HandlerMethod) handler;
         Method method = hm.getMethod();
 
-        logger.info("request interceptora dustu");
+        RequestLogger requestLogger = new RequestLogger(request, response, method);
 
-        System.out.println(method.getName() + " isimli metot yurutumunden once");
+        String logRequest = requestLogger.logPreHandle();
+
+        logger.info(logRequest);
+
         return super.preHandle(request, response, handler);
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        HandlerMethod hm = (HandlerMethod) handler;
-        Method method = hm.getMethod();
-        System.out.println(method.getName() + " isimli metot yurutumunden sonra");
+        logger.info("Response Status: " + response.getStatus());
+
         super.postHandle(request, response, handler, modelAndView);
     }
 }
